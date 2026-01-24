@@ -1,0 +1,74 @@
+
+body { 
+    font-family: 'Rajdhani', sans-serif; 
+    background: #0a0f1a;
+    color: #e0e0ff;
+    overflow-x: hidden;
+}
+
+.font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+/* Terran Colors */
+.text-terran-blue { color: #63b3ed; }
+.text-terran-orange { color: #f6ad55; }
+.text-terran-red { color: #fc8181; }
+.border-terran-blue { border-color: #3182ce; }
+
+/* Animations */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(49, 130, 206, 0.7); }
+    50% { box-shadow: 0 0 20px rgba(49, 130, 206, 0.9); }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Image hover effects */
+.img-hover-zoom {
+    transition: transform 0.3s ease;
+}
+
+.img-hover-zoom:hover {
+    transform: scale(1.05);
+}
+
+.img-glow {
+    transition: all 0.3s ease;
+}
+
+.img-glow:hover {
+    box-shadow: 0 0 30px rgba(49, 130, 206, 0.5);
+}
+
+/* Status indicators */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.status-online { background-color: #48bb78; }
+
+/* Glass effect */
+.glass-effect {
+    background: rgba(26, 32, 44, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(49, 130, 206, 0.2);
+}
