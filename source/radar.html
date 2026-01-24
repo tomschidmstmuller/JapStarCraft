@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARCRAFT COMMAND INTERFACE - GIF ENHANCED</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Rajdhani:wght@300;400;500;600;700&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="radar.media.css">
+    <style>@view-transition { navigation: auto; }</style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+    <script src="interactive.js"></script>
+ </head>
+ <body class="h-full bg-slate-950 font-rajdhani text-cyan-100 overflow-auto">
+  <div id="app-wrapper" class="h-full w-full relative"><!-- Layered background effects -->
+   <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900"></div>
+   <div class="absolute inset-0 grid-overlay opacity-60"></div>
+   <div class="absolute inset-0 noise-overlay"></div><!-- Main interface container -->
+   <div class="relative z-10 h-full flex flex-col p-3 md:p-4 gap-3 md:gap-4"><!-- Top command bar with animated borders -->
+    <header class="hologram-panel corner-accents scanline-effect px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+     <div class="flex items-center gap-4">
+      <div class="relative">
+       <svg class="w-10 h-10 text-cyan-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="filter: drop-shadow(0 0 8px rgba(0, 217, 255, 0.6));"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" stroke-linejoin="round" /> <path d="M12 2 L12 22 M2 8.5 L22 8.5 M2 15.5 L22 15.5" /> <circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.3" />
+       </svg>
+       <div class="absolute inset-0 animate-ping opacity-20">
+        <svg class="w-10 h-10 text-cyan-400" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5" stroke-linejoin="round" />
+        </svg>
+       </div>
+      </div>
+      <div>
+       <h1 id="fleet-name" class="font-orbitron text-xl md:text-2xl font-bold text-cyan-300 tracking-wider" style="text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);">TERRAN DOMINION FLEET</h1>
+       <div class="flex items-center gap-2 mt-0.5">
+        <p class="text-xs text-cyan-500/70 tracking-widest font-tech">TACTICAL COMMAND v5.2.8</p>
+        <div class="loading-bar w-16"></div>
+       </div>
+      </div>
+     </div>
+     <div class="flex items-center gap-4 md:gap-6">
+      <div class="text-right hidden sm:block">
+       <p class="text-xs text-cyan-500/60 tracking-wider">COMMANDER</p>
+       <p id="commander-name" class="font-orbitron text-base text-cyan-200 font-semibold">ADM. RAYNOR</p>
+      </div>
+      <div class="text-right">
+       <p class="text-xs text-cyan-500/60 tracking-wider">MISSION TIME</p>
+       <p id="mission-clock" class="font-tech text-lg md:text-xl text-cyan-300 tabular-nums" style="text-shadow: 0 0 8px rgba(0, 217, 255, 0.6);">00:00:00</p>
+      </div>
+      <div class="w-px h-10 bg-gradient-to-b from-transparent via-cyan-500/40 to-transparent hidden md:block"></div>
+      <div class="flex gap-2"><button class="hud-button px-3 py-2 font-orbitron text-xs text-cyan-300 tracking-wider">COMMS</button> <button class="hud-button px-3 py-2 font-orbitron text-xs text-cyan-300 tracking-wider">DATA</button>
+      </div>
+     </div>
+    </header><!-- Main grid interface -->
+    <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-4 min-h-0"><!-- Left panel - Fleet status with energy borders -->
+     <aside class="lg:col-span-3 hologram-panel corner-accents scanline-effect flex flex-col overflow-hidden">
+        <div class="flex flex-col items-center gap-6 p-8 bg-[#050b14]">
+        <!-- Image 1 -->
+        <div class="w-56 h-56 p-1 
+                    bg-gradient-to-br from-cyan-400/30 to-blue-600/20
+                    border border-cyan-400/40
+                    shadow-[0_0_20px_rgba(0,255,255,0.4)]
+                    relative hover:scale-105 transition-transform duration-300">
+            <img src="media/robocommando.gif" class="w-full h-full object-cover" />
+        </div>
+
+        <!-- Image 2 -->
+        <div class="w-56 h-56 p-1 
+                    bg-gradient-to-br from-cyan-400/30 to-blue-600/20
+                    border border-cyan-400/40
+                    shadow-[0_0_20px_rgba(0,255,255,0.4)]
+                    relative hover:scale-105 transition-transform duration-300">
+            <img src="media/sovietcommando.gif" class="w-full h-full object-cover" />
+        </div>
+
+        <!-- Image 3 -->
+        <div class="w-56 h-56 p-1 
+                    bg-gradient-to-br from-cyan-400/30 to-blue-600/20
+                    border border-cyan-400/40
+                    shadow-[0_0_20px_rgba(0,255,255,0.4)]
+                    relative hover:scale-105 transition-transform duration-300">
+            <img src="media/ghostcommando.gif" class="w-full h-full object-cover" />
+        </div>
+        </div>
+     </aside><!-- Center panel - Tactical display with radar sweep -->
+     <main class="lg:col-span-6 flex flex-col gap-3 md:gap-4"><!-- Main tactical screen -->
+      <div class="flex-1 hologram-panel corner-accents scanline-effect flex flex-col overflow-hidden min-h-[350px]">
+       <div class="px-4 py-3 border-b border-cyan-500/20 flex items-center justify-between bg-gradient-to-r from-cyan-500/5 to-transparent">
+        <h2 id="mission-title" class="font-orbitron text-sm font-bold text-cyan-400 tracking-widest">OPERATION: DARK SWARM</h2>
+        <div class="flex gap-2"><button class="hud-button px-3 py-1.5 text-xs text-cyan-300 font-tech">2D</button> <button class="hud-button px-3 py-1.5 text-xs text-cyan-300 bg-cyan-500/20 font-tech">3D</button> <button class="hud-button px-3 py-1.5 text-xs text-cyan-300 font-tech">HEAT</button>
+        </div>
+       </div>
+       <div class="flex-1 relative p-6 flex items-center justify-center"><!-- Animated radar display -->
+        
+          <div id="main-container" class="min-h-full w-full p-4 md:p-8 flicker"><!-- Main Radar Container -->
+   <div class="max-w-6xl mx-auto"><!-- Header Bar -->
+    <div class="border-2 phosphor-border mb-4 p-3 flex items-center justify-between" id="header-bar">
+     <div class="flex items-center gap-4">
+      <div class="w-3 h-3 rounded-full pulse-glow" id="status-light"></div>
+      <h1 id="radar-title" class="font-orbitron text-lg md:text-2xl font-bold tracking-wider phosphor-text">TACTICAL COMMAND UPLINK</h1>
+     </div>
+     <div class="font-tech text-sm phosphor-text" id="timestamp"><span id="time-display">00:00:00</span>
+     </div>
+    </div><!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4"><!-- Left Panel - Status -->
+     <div class="border-2 phosphor-border p-4 space-y-4" id="left-panel">
+      <div class="border-b pb-2 mb-4" id="system-status-border">
+       <h2 class="font-orbitron text-sm tracking-widest phosphor-text" id="system-status-title">SYSTEM STATUS</h2>
+      </div><!-- Status Items -->
+      <div class="space-y-3 font-tech text-sm">
+       <div class="flex justify-between items-center"><span class="opacity-70">POWER CORE</span> <span class="phosphor-text" id="power-value">98.7%</span>
+       </div>
+       <div class="h-2 rounded overflow-hidden" id="power-bar-bg">
+        <div class="h-full w-[98%]" id="power-bar-fill"></div>
+       </div>
+       <div class="flex justify-between items-center"><span class="opacity-70">SCANNER ARRAY</span> <span class="phosphor-text">ONLINE</span>
+       </div>
+       <div class="h-2 rounded overflow-hidden" id="scanner-bar-bg">
+        <div class="h-full w-full" id="scanner-bar-fill"></div>
+       </div>
+       <div class="flex justify-between items-center"><span class="opacity-70">COMMS UPLINK</span> <span class="phosphor-text">NOMINAL</span>
+       </div>
+       <div class="h-2 rounded overflow-hidden" id="comms-bar-bg">
+        <div class="h-full w-[85%]" id="comms-bar-fill"></div>
+       </div>
+       <div class="flex justify-between items-center"><span class="opacity-70">VESPENE GAS</span> <span id="vespene-value" class="phosphor-text">2,847</span>
+       </div>
+       <div class="flex justify-between items-center"><span class="opacity-70">MINERALS</span> <span id="minerals-value" class="phosphor-text">4,215</span>
+       </div>
+      </div><!-- Alert Box -->
+      <div class="border mt-6 p-3" id="alert-box">
+       <div class="flex items-center gap-2 mb-2">
+        <svg class="w-4 h-4 pulse-glow" id="alert-icon" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg><span class="font-orbitron text-xs tracking-wider" id="alert-title">THREAT LEVEL</span>
+       </div>
+       <div class="font-tech text-2xl font-bold phosphor-text" id="threat-level">
+        MINIMAL
+       </div>
+      </div>
+     </div><!-- Center - Radar Display -->
+     <div class="border-2 phosphor-border p-4 relative overflow-hidden" id="radar-container">
+      <div class="crt-overlay absolute inset-0 pointer-events-none z-10"></div><!-- Scan line effect -->
+      <div class="absolute left-0 right-0 h-px opacity-50 scan-line pointer-events-none z-20" id="scan-line"></div>
+      <div class="border-b pb-2 mb-4" id="radar-display-border">
+       <h2 class="font-orbitron text-sm tracking-widest phosphor-text" id="radar-display-title">RADAR DISPLAY</h2>
+      </div><!-- Radar Circle -->
+      <div class="relative aspect-square max-w-[300px] mx-auto"><!-- Concentric circles -->
+       <div class="absolute inset-0 rounded-full border-2 opacity-30" id="circle-outer"></div>
+       <div class="absolute inset-[15%] rounded-full border opacity-30" id="circle-mid1"></div>
+       <div class="absolute inset-[30%] rounded-full border opacity-30" id="circle-mid2"></div>
+       <div class="absolute inset-[45%] rounded-full border opacity-30" id="circle-inner"></div><!-- Cross hairs -->
+       <div class="absolute top-0 bottom-0 left-1/2 w-px opacity-30" id="crosshair-v"></div>
+       <div class="absolute left-0 right-0 top-1/2 h-px opacity-30" id="crosshair-h"></div><!-- Diagonal lines -->
+       <div class="absolute inset-0 opacity-20" id="diagonals">
+        <div class="absolute top-1/2 left-1/2 w-[70%] h-px origin-left rotate-45" style="background: currentColor;"></div>
+        <div class="absolute top-1/2 left-1/2 w-[70%] h-px origin-left -rotate-45" style="background: currentColor;"></div>
+        <div class="absolute top-1/2 left-1/2 w-[70%] h-px origin-left rotate-[135deg]" style="background: currentColor;"></div>
+        <div class="absolute top-1/2 left-1/2 w-[70%] h-px origin-left -rotate-[135deg]" style="background: currentColor;"></div>
+       </div><!-- Radar sweep -->
+       <div class="absolute inset-0 radar-sweep">
+        <div class="absolute top-1/2 left-1/2 w-1/2 h-1 origin-left" id="sweep-line" style="background: linear-gradient(90deg, currentColor, transparent);"></div>
+        <div class="absolute top-1/2 left-1/2 w-1/2 h-12 origin-left opacity-30 -translate-y-6" id="sweep-glow" style="background: linear-gradient(90deg, currentColor, transparent);"></div>
+       </div><!-- Blips -->
+       <div class="absolute w-2 h-2 rounded-full blip-1" id="blip-1" style="top: 25%; left: 60%;"></div>
+       <div class="absolute w-3 h-3 rounded-full blip-2" id="blip-2" style="top: 70%; left: 30%;"></div>
+       <div class="absolute w-2 h-2 rounded-full blip-3" id="blip-3" style="top: 40%; left: 75%;"></div>
+       <div class="absolute w-4 h-4 rounded-full blip-4 flex items-center justify-center" id="blip-4" style="top: 55%; left: 45%;">
+        <div class="w-2 h-2 rounded-full" id="blip-4-inner"></div>
+       </div><!-- Center point -->
+       <div class="absolute top-1/2 left-1/2 w-3 h-3 -translate-x-1/2 -translate-y-1/2 rounded-full pulse-glow" id="center-point"></div>
+      </div><!-- Sector Info -->
+      <div class="mt-4 text-center font-tech">
+       <div class="text-sm opacity-70">
+        CURRENT SECTOR
+       </div>
+       <div id="sector-name" class="text-xl font-bold phosphor-text tracking-wider">
+        KORHAL IV - GRID 7
+       </div>
+      </div>
+     </div><!-- Right Panel - Data Feed -->
+     <div class="border-2 phosphor-border p-4 relative overflow-hidden" id="right-panel">
+      <div class="crt-overlay absolute inset-0 pointer-events-none"></div>
+      <div class="border-b pb-2 mb-4" id="intel-feed-border">
+       <h2 class="font-orbitron text-sm tracking-widest phosphor-text" id="intel-feed-title">INTEL FEED</h2>
+      </div><!-- Scrolling Data -->
+      <div class="h-64 overflow-hidden relative">
+       <div class="font-tech text-xs space-y-2 data-scroll" id="data-feed">
+        <p class="opacity-80">[14:32:07] Scanning sector for hostile units...</p>
+        <p class="opacity-60">[14:32:05] Marine squad Alpha at grid ref 7-4</p>
+        <p>[14:32:03] <span id="alert-text-1">⚠ ALERT:</span> Zerg activity detected</p>
+        <p class="opacity-60">[14:31:58] SCV #47 mining operation nominal</p>
+        <p class="opacity-80">[14:31:52] Orbital command uplink stable</p>
+        <p class="opacity-60">[14:31:48] Siege tank repositioning complete</p>
+        <p>[14:31:45] <span id="alert-text-2">⚠ WARNING:</span> Low vespene reserves</p>
+        <p class="opacity-80">[14:31:40] Ghost operative en route</p>
+        <p class="opacity-60">[14:31:35] Battlecruiser Hyperion online</p>
+        <p class="opacity-80">[14:31:30] Medivac dropship cleared</p>
+        <p class="opacity-60">[14:31:25] Supply depot construction 78%</p>
+        <p>[14:31:20] <span id="alert-text-3">★ PRIORITY:</span> Enemy base located</p><!-- Duplicate for seamless scroll -->
+        <p class="opacity-80">[14:32:07] Scanning sector for hostile units...</p>
+        <p class="opacity-60">[14:32:05] Marine squad Alpha at grid ref 7-4</p>
+        <p>[14:32:03] <span id="alert-text-4">⚠ ALERT:</span> Zerg activity detected</p>
+        <p class="opacity-60">[14:31:58] SCV #47 mining operation nominal</p>
+        <p class="opacity-80">[14:31:52] Orbital command uplink stable</p>
+        <p class="opacity-60">[14:31:48] Siege tank repositioning complete</p>
+       </div>
+      </div><!-- Unit Counter -->
+      <div class="mt-4 grid grid-cols-3 gap-2 text-center font-tech">
+       <div class="border p-2" id="unit-box-1">
+        <div class="text-2xl font-bold phosphor-text">
+         24
+        </div>
+        <div class="text-xs opacity-70">
+         MARINES
+        </div>
+       </div>
+       <div class="border p-2" id="unit-box-2">
+        <div class="text-2xl font-bold phosphor-text">
+         8
+        </div>
+        <div class="text-xs opacity-70">
+         TANKS
+        </div>
+       </div>
+       <div class="border p-2" id="unit-box-3">
+        <div class="text-2xl font-bold phosphor-text">
+         3
+        </div>
+        <div class="text-xs opacity-70">
+         CRUISERS
+        </div>
+       </div>
+      </div>
+     </div>
+    </div><!-- Bottom Bar -->
+    <div class="border-2 phosphor-border mt-4 p-3 flex flex-wrap items-center justify-between gap-4" id="bottom-bar">
+     <div class="flex items-center gap-6 font-tech text-sm">
+      <div class="flex items-center gap-2">
+       <div class="w-2 h-2 rounded-full" id="status-dot-1"></div><span>TERRAN DOMINION</span>
+      </div>
+      <div class="flex items-center gap-2">
+       <div class="w-2 h-2 rounded-full pulse-glow" id="status-dot-2"></div><span>BROADCAST ACTIVE</span>
+      </div>
+     </div>
+     <div class="font-orbitron text-xs tracking-widest opacity-70">
+      TACTICAL OPERATIONS CENTER v2.4.7
+     </div>
+    </div>
+   </div>
+  </div>
+
+
+       </div>
+      </div><!-- Animated command buttons -->
+     </main><!-- Right panel - Intel & minimap with animations -->
+     <aside class="lg:col-span-3 flex flex-col gap-3 md:gap-4"><!-- Animated minimap -->
+      <div class="hologram-panel corner-accents scanline-effect">
+       <div class="px-4 py-3 border-b border-cyan-500/20 flex items-center justify-between bg-gradient-to-r from-cyan-500/5 to-transparent">
+        <h2 id="sector-name" class="font-orbitron text-sm font-bold text-cyan-400 tracking-widest">SECTOR 7-G</h2><button class="text-cyan-400/60 hover:text-cyan-300 transition-colors">
+         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+         </svg></button>
+       </div>
+       <div class="p-4">
+        <div class="minimap-container aspect-square relative overflow-hidden"><!-- Minimap grid -->
+         <div class="absolute inset-0 grid grid-cols-5 grid-rows-5">
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+          <div class="border border-cyan-500/10"></div>
+         </div><!-- Minimap sweep animation -->
+         <div class="absolute inset-0 flex items-center justify-center">
+          <div class="minimap-sweep"></div>
+         </div><!-- Tactical markers -->
+         <div class="absolute top-[25%] left-[35%]">
+          <div class="w-3 h-3 bg-green-400/70 rounded-sm" style="box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);"></div>
+         </div>
+         <div class="absolute top-[60%] left-[55%]">
+          <div class="w-3 h-3 bg-red-400/70 rounded-sm" style="box-shadow: 0 0 8px rgba(248, 113, 113, 0.6);"></div>
+         </div>
+         <div class="absolute top-[40%] left-[70%]">
+          <div class="w-2 h-2 bg-yellow-300/70 rounded-full animate-pulse"></div>
+         </div><!-- FOW rectangle with border animation -->
+         <div class="absolute top-[30%] left-[25%] w-[40%] h-[35%] border-2 border-cyan-400/40 bg-cyan-400/5" style="animation: pulse-border 3s ease-in-out infinite;"></div>
+        </div>
+       </div>
+      </div><!-- Resources with animated counters -->
+      <div class="hologram-panel corner-accents scanline-effect">
+       <div class="px-4 py-3 border-b border-cyan-500/20 bg-gradient-to-r from-cyan-500/5 to-transparent">
+        <h2 class="font-orbitron text-sm font-bold text-cyan-400 tracking-widest">RESOURCES</h2>
+       </div>
+       <div class="p-4 space-y-3">
+        <div class="flex items-center justify-between group">
+         <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-blue-500/10 border border-blue-400/30 flex items-center justify-center relative overflow-hidden">
+           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" style="animation: energy-flow 2s ease-in-out infinite;"></div>
+           <svg class="w-5 h-5 text-blue-400 relative z-10" fill="currentColor" viewbox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+           </svg>
+          </div><span class="text-sm text-cyan-300 font-tech">MINERALS</span>
+         </div><span class="font-orbitron text-xl text-blue-300 font-bold tabular-nums" id="minerals" style="text-shadow: 0 0 10px rgba(96, 165, 250, 0.6);">14,820</span>
+        </div>
+        <div class="loading-bar"></div>
+        <div class="flex items-center justify-between group">
+         <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-green-500/10 border border-green-400/30 flex items-center justify-center relative overflow-hidden">
+           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-green-400/20 to-transparent" style="animation: energy-flow 2s ease-in-out infinite; animation-delay: 0.5s;"></div>
+           <svg class="w-5 h-5 text-green-400 relative z-10" fill="currentColor" viewbox="0 0 24 24">
+            <path d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 000 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
+           </svg>
+          </div><span class="text-sm text-cyan-300 font-tech">VESPENE</span>
+         </div><span class="font-orbitron text-xl text-green-300 font-bold tabular-nums" id="vespene" style="text-shadow: 0 0 10px rgba(74, 222, 128, 0.6);">9,640</span>
+        </div>
+        <div class="loading-bar"></div>
+        <div class="flex items-center justify-between group">
+         <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-yellow-500/10 border border-yellow-400/30 flex items-center justify-center relative overflow-hidden">
+           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400/20 to-transparent" style="animation: energy-flow 2s ease-in-out infinite; animation-delay: 1s;"></div>
+           <svg class="w-5 h-5 text-yellow-400 relative z-10" fill="currentColor" viewbox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+           </svg>
+          </div><span class="text-sm text-cyan-300 font-tech">SUPPLY</span>
+         </div><span class="font-orbitron text-xl text-yellow-300 font-bold tabular-nums" style="text-shadow: 0 0 10px rgba(253, 224, 71, 0.6);"><span id="supply-used">168</span>/<span id="supply-max">200</span></span>
+        </div>
+       </div>
+      </div><!-- Intel feed with scrolling data -->
+      <div class="flex-1 hologram-panel corner-accents scanline-effect flex flex-col overflow-hidden min-h-[200px]">
+       <div class="px-4 py-3 border-b border-cyan-500/20 flex items-center justify-between bg-gradient-to-r from-cyan-500/5 to-transparent">
+        <h2 class="font-orbitron text-sm font-bold text-cyan-400 tracking-widest">INTEL FEED</h2>
+        <div class="flex items-center gap-2">
+         <div class="status-indicator bg-cyan-400" style="animation: pulse-border 1s ease-in-out infinite;"></div><span class="text-xs text-cyan-400 font-tech">LIVE</span>
+        </div>
+       </div>
+       <div class="flex-1 overflow-auto p-3 data-stream" id="intel-feed">
+        <div class="space-y-2 text-xs font-tech">
+         <div class="intel-message flex gap-2 items-start opacity-90"><span class="text-cyan-500/50 whitespace-nowrap">14:23:18</span> <span class="text-green-400">● Hyperion shields at maximum</span>
+         </div>
+         <div class="intel-message flex gap-2 items-start opacity-90"><span class="text-cyan-500/50 whitespace-nowrap">14:22:05</span> <span class="text-red-400">⚠ Enemy warp signature - Sector 7G</span>
+         </div>
+         <div class="intel-message flex gap-2 items-start opacity-90"><span class="text-cyan-500/50 whitespace-nowrap">14:21:33</span> <span class="text-yellow-400">◆ Nemesis requesting reinforcements</span>
+         </div>
+         <div class="intel-message flex gap-2 items-start opacity-90"><span class="text-cyan-500/50 whitespace-nowrap">14:20:12</span> <span class="text-cyan-300">◇ Resource harvesting optimal</span>
+         </div>
+         <div class="intel-message flex gap-2 items-start opacity-90"><span class="text-cyan-500/50 whitespace-nowrap">14:18:47</span> <span class="text-green-400">● Carrier interceptors redeployed</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </aside>
+    </div><!-- Bottom status bar with animated indicators -->
+    <footer class="hologram-panel corner-accents px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+     <div class="flex items-center gap-4 flex-wrap">
+      <div class="flex items-center gap-2">
+       <div class="status-indicator bg-green-400"></div><span id="status-message" class="text-cyan-400/80 font-tech">ALL SYSTEMS OPERATIONAL</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-2"><span class="text-cyan-500/40">|</span> <span class="text-cyan-400/70 font-tech">UPLINK: <span class="text-green-400">SECURE</span></span>
+      </div>
+      <div class="hidden md:flex items-center gap-2"><span class="text-cyan-500/40">|</span> <span class="text-cyan-400/70 font-tech">THREAT: <span class="text-yellow-400">ELEVATED</span></span>
+      </div>
+      <div class="hidden lg:flex items-center gap-2"><span class="text-cyan-500/40">|</span> <span class="text-cyan-400/70 font-tech">DEFCON: <span class="text-red-400">2</span></span>
+      </div>
+     </div>
+     <div class="flex items-center gap-4 font-tech"><span class="text-cyan-400/70">LAT: <span class="text-cyan-300">-34.921</span></span> <span class="text-cyan-400/70">LONG: <span class="text-cyan-300">138.599</span></span> <span class="text-cyan-300 tabular-nums" id="system-time">--:--:--</span>
+     </div>
+    </footer>
+   </div>
+  </div>
+
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c2e02e940cf5545',t:'MTc2OTI0MTc3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

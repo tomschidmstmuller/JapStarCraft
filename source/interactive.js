@@ -339,3 +339,235 @@ window.addEventListener('resize', () => {
         icon.className = 'fas fa-bars text-terran-blue';
     }
 });
+
+
+const defaultConfig = {
+    commander_name: 'ADM. RAYNOR',
+    fleet_name: 'TERRAN DOMINION FLEET',
+    mission_title: 'OPERATION: DARK SWARM',
+    sector_name: 'SECTOR 7-G',
+    status_message: 'ALL SYSTEMS OPERATIONAL',
+    background_color: '#0a0e1a',
+    panel_color: '#0d1420',
+    text_color: '#e0f2fe',
+    primary_accent: '#00d9ff',
+    secondary_accent: '#14b8a6',
+    font_family: 'Rajdhani',
+    font_size: 16
+};
+
+let config = { ...defaultConfig };
+
+// Mission clock
+let missionSeconds = 0;
+setInterval(() => {
+    missionSeconds++;
+    const hours = Math.floor(missionSeconds / 3600).toString().padStart(2, '0');
+    const minutes = Math.floor((missionSeconds % 3600) / 60).toString().padStart(2, '0');
+    const seconds = (missionSeconds % 60).toString().padStart(2, '0');
+    const clockEl = document.getElementById('mission-clock');
+    if (clockEl) clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+}, 1000);
+
+// System time
+setInterval(() => {
+    const now = new Date();
+    const timeEl = document.getElementById('system-time');
+    if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+}, 1000);
+
+// Animated resource counters
+let minerals = 14820;
+let vespene = 9640;
+let supplyUsed = 168;
+
+setInterval(() => {
+    minerals += Math.floor(Math.random() * 80) + 20;
+    vespene += Math.floor(Math.random() * 40) + 10;
+    
+    const mineralsEl = document.getElementById('minerals');
+    const vespeneEl = document.getElementById('vespene');
+    
+    if (mineralsEl) {
+    mineralsEl.textContent = minerals.toLocaleString();
+    mineralsEl.classList.add('stat-animate');
+    setTimeout(() => mineralsEl.classList.remove('stat-animate'), 400);
+    }
+    
+    if (vespeneEl) {
+    vespeneEl.textContent = vespene.toLocaleString();
+    vespeneEl.classList.add('stat-animate');
+    setTimeout(() => vespeneEl.classList.remove('stat-animate'), 400);
+    }
+}, 3500);
+
+// Supply fluctuation
+setInterval(() => {
+    supplyUsed = Math.min(200, supplyUsed + Math.floor(Math.random() * 3) - 1);
+    const supplyUsedEl = document.getElementById('supply-used');
+    if (supplyUsedEl) {
+    supplyUsedEl.textContent = supplyUsed;
+    supplyUsedEl.classList.add('stat-animate');
+    setTimeout(() => supplyUsedEl.classList.remove('stat-animate'), 400);
+    }
+}, 5000);
+
+// Intel feed updates
+const intelMessages = [
+    { type: 'green', text: '● Patrol route complete - All sectors clear' },
+    { type: 'red', text: '⚠ Zerg bioforms detected - 12.3 km northeast' },
+    { type: 'yellow', text: '◆ Reinforcement squadron inbound - ETA 4 min' },
+    { type: 'cyan', text: '◇ Anomaly scan initiated - Deep space sector' },
+    { type: 'green', text: '● Hyperspace jump calculations verified' },
+    { type: 'red', text: '⚠ Hull breach alarm - Damage control dispatched' },
+    { type: 'yellow', text: '◆ Encrypted transmission intercepted' },
+    { type: 'cyan', text: '◇ Mining operations at 97% efficiency' },
+    { type: 'green', text: '● Fighter squadron launch successful' },
+    { type: 'red', text: '⚠ Hostile ship signatures multiplying' },
+    { type: 'yellow', text: '◆ Command reviewing tactical options' },
+    { type: 'cyan', text: '◇ Long-range sensors recalibrated' }
+];
+
+setInterval(() => {
+    const feed = document.getElementById('intel-feed');
+    if (!feed) return;
+    
+    const msg = intelMessages[Math.floor(Math.random() * intelMessages.length)];
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour12: false });
+    
+    const colors = {
+    green: 'text-green-400',
+    red: 'text-red-400',
+    yellow: 'text-yellow-400',
+    cyan: 'text-cyan-300'
+    };
+    
+    const container = feed.querySelector('.space-y-2');
+    if (!container) return;
+    
+    const div = document.createElement('div');
+    div.className = 'intel-message flex gap-2 items-start opacity-90';
+    div.innerHTML = `
+    <span class="text-cyan-500/50 whitespace-nowrap">${time}</span>
+    <span class="${colors[msg.type]}">${msg.text}</span>
+    `;
+    
+    container.insertBefore(div, container.firstChild);
+    
+    if (container.children.length > 25) {
+    container.removeChild(container.lastChild);
+    }
+}, 7000);
+
+async function onConfigChange(cfg) {
+    config = { ...defaultConfig, ...cfg };
+    
+    const commanderEl = document.getElementById('commander-name');
+    if (commanderEl) commanderEl.textContent = config.commander_name || defaultConfig.commander_name;
+    
+    const fleetEl = document.getElementById('fleet-name');
+    if (fleetEl) fleetEl.textContent = config.fleet_name || defaultConfig.fleet_name;
+    
+    const missionEl = document.getElementById('mission-title');
+    if (missionEl) missionEl.textContent = config.mission_title || defaultConfig.mission_title;
+    
+    const sectorEl = document.getElementById('sector-name');
+    if (sectorEl) sectorEl.textContent = config.sector_name || defaultConfig.sector_name;
+    
+    const statusEl = document.getElementById('status-message');
+    if (statusEl) statusEl.textContent = config.status_message || defaultConfig.status_message;
+    
+    // Apply colors
+    document.documentElement.style.setProperty('--bg-primary', config.background_color || defaultConfig.background_color);
+    document.documentElement.style.setProperty('--panel-bg', config.panel_color || defaultConfig.panel_color);
+    document.documentElement.style.setProperty('--text-color', config.text_color || defaultConfig.text_color);
+    document.documentElement.style.setProperty('--cyan-glow', config.primary_accent || defaultConfig.primary_accent);
+    document.documentElement.style.setProperty('--teal-accent', config.secondary_accent || defaultConfig.secondary_accent);
+    
+    // Apply font
+    const fontFamily = config.font_family || defaultConfig.font_family;
+    document.body.style.fontFamily = `${fontFamily}, Rajdhani, sans-serif`;
+    
+    // Apply font size
+    const baseSize = config.font_size || defaultConfig.font_size;
+    document.documentElement.style.fontSize = `${baseSize}px`;
+}
+
+function mapToCapabilities(cfg) {
+    return {
+    recolorables: [
+        {
+        get: () => cfg.background_color || defaultConfig.background_color,
+        set: (value) => {
+            cfg.background_color = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ background_color: value });
+        }
+        },
+        {
+        get: () => cfg.panel_color || defaultConfig.panel_color,
+        set: (value) => {
+            cfg.panel_color = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ panel_color: value });
+        }
+        },
+        {
+        get: () => cfg.text_color || defaultConfig.text_color,
+        set: (value) => {
+            cfg.text_color = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ text_color: value });
+        }
+        },
+        {
+        get: () => cfg.primary_accent || defaultConfig.primary_accent,
+        set: (value) => {
+            cfg.primary_accent = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ primary_accent: value });
+        }
+        },
+        {
+        get: () => cfg.secondary_accent || defaultConfig.secondary_accent,
+        set: (value) => {
+            cfg.secondary_accent = value;
+            if (window.elementSdk) window.elementSdk.setConfig({ secondary_accent: value });
+        }
+        }
+    ],
+    borderables: [],
+    fontEditable: {
+        get: () => cfg.font_family || defaultConfig.font_family,
+        set: (value) => {
+        cfg.font_family = value;
+        if (window.elementSdk) window.elementSdk.setConfig({ font_family: value });
+        }
+    },
+    fontSizeable: {
+        get: () => cfg.font_size || defaultConfig.font_size,
+        set: (value) => {
+        cfg.font_size = value;
+        if (window.elementSdk) window.elementSdk.setConfig({ font_size: value });
+        }
+    }
+    };
+}
+
+function mapToEditPanelValues(cfg) {
+    return new Map([
+    ['commander_name', cfg.commander_name || defaultConfig.commander_name],
+    ['fleet_name', cfg.fleet_name || defaultConfig.fleet_name],
+    ['mission_title', cfg.mission_title || defaultConfig.mission_title],
+    ['sector_name', cfg.sector_name || defaultConfig.sector_name],
+    ['status_message', cfg.status_message || defaultConfig.status_message]
+    ]);
+}
+
+if (window.elementSdk) {
+    window.elementSdk.init({
+    defaultConfig,
+    onConfigChange,
+    mapToCapabilities,
+    mapToEditPanelValues
+    });
+} else {
+    onConfigChange(defaultConfig);
+}
