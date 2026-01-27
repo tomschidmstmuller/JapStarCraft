@@ -1,6 +1,3 @@
-BET 😼⚙️🛸
-Dưới đây là **tech-heavy README**, **themed theo StarCraft / sci-fi command console**, **Cantonese written**, **Markdown-ready**, và **dev-portfolio cấp**.
-Không nói thừa, toàn thứ mà dev đọc là hiểu ngay.
 
 ---
 
