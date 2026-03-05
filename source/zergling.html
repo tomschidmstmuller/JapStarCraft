@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Swarm Awakens</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Rajdhani:wght@300;400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.2; filter: blur(20px); }
+      50% { opacity: 0.7; filter: blur(25px); }
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    @keyframes vein-pulse {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.9; }
+    }
+    @keyframes spore-float {
+      0%, 100% { transform: translateY(0) scale(1) rotateZ(0deg); opacity: 0.3; }
+      50% { transform: translateY(-30px) scale(1.3) rotateZ(180deg); opacity: 0.8; }
+    }
+    @keyframes organic-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(200, 0, 100, 0.4), inset 0 0 20px rgba(57, 255, 20, 0.05); }
+      50% { box-shadow: 0 0 50px rgba(200, 0, 100, 0.8), inset 0 0 30px rgba(57, 255, 20, 0.1); }
+    }
+    @keyframes writhe {
+      0%, 100% { transform: translateX(0) rotateZ(-1deg); }
+      50% { transform: translateX(2px) rotateZ(1deg); }
+    }
+    @keyframes decay {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+    @keyframes drip {
+      0% { transform: translateY(-100%); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(300%); opacity: 0; }
+    }
+    @keyframes chitin-shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .pulse-glow { animation: pulse-glow 4s ease-in-out infinite; }
+    .breathe { animation: breathe 6s ease-in-out infinite; }
+    .vein-pulse { animation: vein-pulse 3s ease-in-out infinite; }
+    .spore-float { animation: spore-float 5s ease-in-out infinite; }
+    .organic-glow { animation: organic-glow 3s ease-in-out infinite; }
+    .writhe { animation: writhe 2s ease-in-out infinite; }
+    .decay { animation: decay 4s ease-in-out infinite; }
+    
+    .chitin-texture {
+      background: linear-gradient(135deg, #0d0208 0%, #1a0a1f 25%, #0d0208 50%, #2d0f2d 75%, #0d0208 100%);
+      background-size: 400% 400%;
+      animation: chitin-shimmer 15s linear infinite;
+    }
+    
+    .organic-btn {
+      background: radial-gradient(ellipse at center, #2d0f2d 0%, #0d0208 70%);
+      border: 2px solid #c80064;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+    .organic-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(200, 0, 100, 0.5) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .organic-btn:hover::before { opacity: 1; }
+    .organic-btn:hover {
+      box-shadow: 0 0 30px rgba(200, 0, 100, 0.6), 0 0 60px rgba(139, 0, 0, 0.4);
+      transform: scale(1.05);
+      border-color: #ff1493;
+    }
+    
+    .unit-card {
+      background: linear-gradient(180deg, rgba(45, 15, 45, 0.9) 0%, rgba(13, 2, 8, 0.98) 100%);
+      border: 1px solid rgba(200, 0, 100, 0.4);
+      position: relative;
+      transition: all 0.5s ease;
+    }
+    .unit-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #c80064, transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .unit-card:hover::before { opacity: 1; }
+    .unit-card:hover {
+      border-color: #c80064;
+      box-shadow: 0 0 40px rgba(200, 0, 100, 0.3), inset 0 0 30px rgba(200, 0, 100, 0.05);
+      transform: translateY(-5px);
+    }
+    
+    .hive-bg {
+      background: 
+        radial-gradient(ellipse at 20% 30%, rgba(139, 0, 0, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(139, 0, 70, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(200, 0, 100, 0.08) 0%, transparent 70%),
+        linear-gradient(180deg, #050102 0%, #0d0208 50%, #050102 100%);
+    }
+    
+    .vein {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(200, 0, 100, 0.8), transparent);
+      height: 2px;
+      border-radius: 50%;
+    }
+    
+    .spore {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, #c80064 0%, #8b0000 70%);
+      border-radius: 50%;
+    }
+    
+    .alien-font { font-family: 'Orbitron', monospace; }
+    .body-font { font-family: 'Rajdhani', sans-serif; }
+    
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(200, 0, 100, 0.3);
+      transition: all 0.4s ease;
+    }
+    .gallery-item:hover {
+      border-color: #c80064;
+      box-shadow: 0 0 30px rgba(200, 0, 100, 0.4);
+    }
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 60%, rgba(200, 0, 100, 0.15) 100%);
+      pointer-events: none;
+    }
+    
+    .section-divider {
+      height: 4px;
+      background: linear-gradient(90deg, transparent 0%, #8b0000 20%, #c80064 50%, #8b0000 80%, transparent 100%);
+      position: relative;
+    }
+    .section-divider::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      filter: blur(10px);
+      opacity: 0.5;
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #c80064;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .nav-link:hover {
+      color: #c80064;
+      text-shadow: 0 0 10px rgba(200, 0, 100, 0.6);
+    }
+
+    .input-organic {
+      background: rgba(13, 2, 8, 0.9);
+      border: 1px solid rgba(200, 0, 100, 0.3);
+      transition: all 0.3s ease;
+    }
+    .input-organic:focus {
+      border-color: #c80064;
+      box-shadow: 0 0 20px rgba(200, 0, 100, 0.2), inset 0 0 10px rgba(200, 0, 100, 0.05);
+      outline: none;
+    }
+
+    .scroll-container {
+      scrollbar-width: thin;
+      scrollbar-color: #c80064 #050102;
+    }
+    .scroll-container::-webkit-scrollbar {
+      width: 8px;
+    }
+    .scroll-container::-webkit-scrollbar-track {
+      background: #050102;
+    }
+    .scroll-container::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #c80064, #8b0000);
+      border-radius: 4px;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full body-font">
+  <div id="app-wrapper" class="h-full hive-bg text-gray-200 overflow-auto scroll-container">
+   <!-- Floating Spores Background -->
+   <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="spore spore-float" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
+    <div class="spore spore-float" style="top: 25%; left: 75%; animation-delay: 1s;"></div>
+    <div class="spore spore-float" style="top: 60%; left: 25%; animation-delay: 2s;"></div>
+    <div class="spore spore-float" style="top: 80%; left: 85%; animation-delay: 0.5s;"></div>
+    <div class="spore spore-float" style="top: 45%; left: 55%; animation-delay: 1.5s;"></div>
+    <div class="spore spore-float" style="top: 15%; left: 90%; animation-delay: 2.5s;"></div>
+    <div class="spore spore-float" style="top: 70%; left: 10%; animation-delay: 3s;"></div><!-- Organic Veins -->
+    <div class="vein vein-pulse" style="top: 20%; left: 0; width: 40%; transform: rotate(5deg);"></div>
+    <div class="vein vein-pulse" style="top: 50%; right: 0; width: 35%; transform: rotate(-3deg); animation-delay: 1s;"></div>
+    <div class="vein vein-pulse" style="top: 75%; left: 10%; width: 50%; transform: rotate(2deg); animation-delay: 2s;"></div>
+   </div><!-- Navigation -->
+   <nav class="fixed top-0 left-0 right-0 z-50 chitin-texture border-b border-green-500/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex items-center justify-between h-16">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 relative">
+        <svg viewbox="0 0 100 100" class="w-full h-full">
+         <defs>
+          <radialgradient id="zergGlow" cx="50%" cy="50%" r="50%">
+           <stop offset="0%" style="stop-color:#c80064;stop-opacity:1" />
+           <stop offset="100%" style="stop-color:#c80064;stop-opacity:0" />
+          </radialgradient>
+         </defs> <ellipse cx="50" cy="50" rx="35" ry="45" fill="#0d0208" stroke="#c80064" stroke-width="2" /> <ellipse cx="50" cy="35" rx="15" ry="20" fill="url(#zergGlow)" class="pulse-glow" /> <path d="M 30 60 Q 50 80 70 60" stroke="#8b0000" stroke-width="3" fill="none" /> <circle cx="40" cy="35" r="5" fill="#c80064" class="pulse-glow" /> <circle cx="60" cy="35" r="5" fill="#c80064" class="pulse-glow" />
+        </svg>
+       </div><span class="alien-font text-xl font-bold text-pink-500">THE SWARM</span>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+       <a href="#units" class="nav-link alien-font text-sm tracking-wider">UNITS</a> <a href="#gallery" class="nav-link alien-font text-sm tracking-wider">GALLERY</a> <a href="#lore" class="nav-link alien-font text-sm tracking-wider">LORE</a> <a href="#join" class="nav-link alien-font text-sm tracking-wider">JOIN</a>
+      </div><button id="mobile-menu-btn" class="md:hidden p-2 text-green-400">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg></button>
+     </div>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden chitin-texture border-t border-green-500/20">
+     <div class="px-4 py-4 space-y-3">
+      <a href="#units" class="block alien-font text-sm tracking-wider py-2 hover:text-green-400 transition-colors">UNITS</a> <a href="#gallery" class="block alien-font text-sm tracking-wider py-2 hover:text-green-400 transition-colors">GALLERY</a> <a href="#lore" class="block alien-font text-sm tracking-wider py-2 hover:text-green-400 transition-colors">LORE</a> <a href="#join" class="block alien-font text-sm tracking-wider py-2 hover:text-green-400 transition-colors">JOIN</a>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <section class="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+    <!-- Hero Background Effects -->
+    <div class="absolute inset-0">
+     <div class="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-transparent to-red-900/20"></div>
+     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-green-500/10 rounded-full blur-3xl pulse-glow"></div>
+     <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-red-900/20 rounded-full blur-2xl"></div>
+     <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-purple-900/20 rounded-full blur-2xl"></div>
+    </div><!-- Hive Structure Background -->
+    <div class="absolute inset-0 opacity-20">
+     <svg class="w-full h-full" viewbox="0 0 1000 1000" preserveaspectratio="xMidYMid slice">
+      <defs>
+       <pattern id="hexPattern" x="0" y="0" width="100" height="115" patternunits="userSpaceOnUse">
+        <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" fill="none" stroke="#39ff14" stroke-width="0.5" opacity="0.3" />
+       </pattern>
+      </defs> <rect width="100%" height="100%" fill="url(#hexPattern)" />
+     </svg>
+    </div>
+    <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+     <!-- Main Title -->
+     <div class="breathe">
+      <h1 id="hero-title" class="alien-font text-5xl sm:text-7xl md:text-8xl font-black mb-4 tracking-wider"><span class="bg-gradient-to-r from-red-700 via-pink-500 to-red-900 bg-clip-text text-transparent drop-shadow-lg" style="text-shadow: 0 0 60px rgba(200, 0, 100, 0.7), 0 0 120px rgba(139, 0, 0, 0.5);"> THE SWARM </span></h1>
+      <h2 id="hero-subtitle" class="alien-font text-2xl sm:text-3xl md:text-4xl text-red-600 tracking-widest mb-2 writhe" style="text-shadow: 0 0 30px rgba(139, 0, 0, 0.9);">AWAKENS</h2>
+     </div>
+     <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">We are the Swarm. We are inevitable. <span class="text-red-500 decay">Assimilation</span> is our gift to the universe.</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <a href="#join" class="organic-btn px-8 py-4 rounded-full alien-font text-green-400 tracking-wider text-lg"> JOIN THE SWARM </a> <a href="#lore" class="px-8 py-4 rounded-full border border-red-800/50 hover:border-red-600 transition-all alien-font text-red-400 tracking-wider text-lg hover:text-red-300"> LEARN OUR WAYS </a>
+     </div><!-- Scroll Indicator -->
+     <div class="absolute bottom-10 left-1/2 -translate-x-1/2">
+      <div class="w-6 h-10 border-2 border-green-500/50 rounded-full flex justify-center pt-2">
+       <div class="w-1.5 h-3 bg-green-400 rounded-full animate-bounce"></div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider"></div><!-- Units Section -->
+   <section id="units" class="relative py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 id="units-section-title" class="alien-font text-4xl sm:text-5xl font-bold text-green-400 mb-4" style="text-shadow: 0 0 40px rgba(57, 255, 20, 0.4);">SWARM ORGANISMS</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">Each creature serves the Overmind. Each form perfected through countless cycles of evolution.</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Unit Card 1 - Zergling -->
+      <div class="unit-card rounded-2xl p-6 breathe" style="animation-delay: 0s;">
+       <div class="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-purple-900/50 to-black flex items-center justify-center">
+        <svg viewbox="0 0 200 150" class="w-3/4 h-3/4">
+         <ellipse cx="100" cy="90" rx="60" ry="35" fill="#2d1235" /> <ellipse cx="70" cy="70" rx="25" ry="35" fill="#3d1a45" transform="rotate(-20 70 70)" /> <ellipse cx="130" cy="70" rx="25" ry="35" fill="#3d1a45" transform="rotate(20 130 70)" /> <circle cx="85" cy="55" r="8" fill="#39ff14" class="pulse-glow" /> <circle cx="115" cy="55" r="8" fill="#39ff14" class="pulse-glow" /> <path d="M 40 100 Q 20 80 30 50" stroke="#8b0000" stroke-width="4" fill="none" /> <path d="M 160 100 Q 180 80 170 50" stroke="#8b0000" stroke-width="4" fill="none" /> <path d="M 60 120 L 40 140" stroke="#3d1a45" stroke-width="6" /> <path d="M 140 120 L 160 140" stroke="#3d1a45" stroke-width="6" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+       </div>
+       <h3 class="alien-font text-2xl text-green-400 mb-2">ZERGLING</h3>
+       <p class="text-gray-400 text-sm mb-4">Swift harbingers of death. Born in pairs, they swarm enemies with razor-sharp claws and relentless aggression.</p>
+       <div class="flex gap-4 text-xs">
+        <span class="px-3 py-1 bg-red-900/30 border border-red-800/50 rounded-full text-red-400">MELEE</span> <span class="px-3 py-1 bg-green-900/30 border border-green-800/50 rounded-full text-green-400">FAST</span>
+       </div>
+      </div><!-- Unit Card 2 - Hydralisk -->
+      <div class="unit-card rounded-2xl p-6 breathe" style="animation-delay: 0.5s;">
+       <div class="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-purple-900/50 to-black flex items-center justify-center">
+        <svg viewbox="0 0 200 150" class="w-3/4 h-3/4">
+         <ellipse cx="100" cy="100" rx="40" ry="45" fill="#2d1235" /> <path d="M 60 80 Q 50 50 70 30" stroke="#3d1a45" stroke-width="8" fill="none" /> <path d="M 140 80 Q 150 50 130 30" stroke="#3d1a45" stroke-width="8" fill="none" /> <ellipse cx="100" cy="50" rx="30" ry="25" fill="#3d1a45" /> <circle cx="90" cy="45" r="6" fill="#39ff14" class="pulse-glow" /> <circle cx="110" cy="45" r="6" fill="#39ff14" class="pulse-glow" /> <path d="M 85 60 Q 100 70 115 60" stroke="#8b0000" stroke-width="2" fill="none" /> <path d="M 60 100 L 30 120" stroke="#8b0000" stroke-width="4" /> <path d="M 140 100 L 170 120" stroke="#8b0000" stroke-width="4" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+       </div>
+       <h3 class="alien-font text-2xl text-green-400 mb-2">HYDRALISK</h3>
+       <p class="text-gray-400 text-sm mb-4">Spine launchers of the Swarm. Their needle spines pierce armor and flesh alike from devastating range.</p>
+       <div class="flex gap-4 text-xs">
+        <span class="px-3 py-1 bg-blue-900/30 border border-blue-800/50 rounded-full text-blue-400">RANGED</span> <span class="px-3 py-1 bg-purple-900/30 border border-purple-800/50 rounded-full text-purple-400">VERSATILE</span>
+       </div>
+      </div><!-- Unit Card 3 - Mutalisk -->
+      <div class="unit-card rounded-2xl p-6 breathe" style="animation-delay: 1s;">
+       <div class="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-purple-900/50 to-black flex items-center justify-center">
+        <svg viewbox="0 0 200 150" class="w-3/4 h-3/4">
+         <ellipse cx="100" cy="80" rx="50" ry="30" fill="#2d1235" /> <path d="M 50 80 Q 20 60 40 40" stroke="#3d1a45" stroke-width="12" fill="none" /> <path d="M 150 80 Q 180 60 160 40" stroke="#3d1a45" stroke-width="12" fill="none" /> <ellipse cx="100" cy="65" rx="20" ry="15" fill="#3d1a45" /> <circle cx="95" cy="60" r="5" fill="#39ff14" class="pulse-glow" /> <circle cx="105" cy="60" r="5" fill="#39ff14" class="pulse-glow" /> <path d="M 100 95 L 100 130 L 85 140 M 100 130 L 115 140" stroke="#8b0000" stroke-width="3" fill="none" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+       </div>
+       <h3 class="alien-font text-2xl text-green-400 mb-2">MUTALISK</h3>
+       <p class="text-gray-400 text-sm mb-4">Aerial nightmares. Their glaive wurms bounce between targets, spreading terror across the battlefield.</p>
+       <div class="flex gap-4 text-xs">
+        <span class="px-3 py-1 bg-cyan-900/30 border border-cyan-800/50 rounded-full text-cyan-400">AIR</span> <span class="px-3 py-1 bg-yellow-900/30 border border-yellow-800/50 rounded-full text-yellow-400">BOUNCING</span>
+       </div>
+      </div><!-- Unit Card 4 - Ultralisk -->
+      <div class="unit-card rounded-2xl p-6 breathe" style="animation-delay: 1.5s;">
+       <div class="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-purple-900/50 to-black flex items-center justify-center">
+        <svg viewbox="0 0 200 150" class="w-3/4 h-3/4">
+         <ellipse cx="100" cy="100" rx="70" ry="40" fill="#2d1235" /> <ellipse cx="100" cy="70" rx="35" ry="30" fill="#3d1a45" /> <path d="M 70 50 Q 60 20 80 10" stroke="#8b0000" stroke-width="8" fill="none" /> <path d="M 130 50 Q 140 20 120 10" stroke="#8b0000" stroke-width="8" fill="none" /> <circle cx="85" cy="65" r="8" fill="#39ff14" class="pulse-glow" /> <circle cx="115" cy="65" r="8" fill="#39ff14" class="pulse-glow" /> <rect x="30" y="110" width="15" height="30" fill="#3d1a45" rx="3" /> <rect x="60" y="115" width="15" height="25" fill="#3d1a45" rx="3" /> <rect x="125" y="115" width="15" height="25" fill="#3d1a45" rx="3" /> <rect x="155" y="110" width="15" height="30" fill="#3d1a45" rx="3" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+       </div>
+       <h3 class="alien-font text-2xl text-green-400 mb-2">ULTRALISK</h3>
+       <p class="text-gray-400 text-sm mb-4">Living siege engines. Their kaiser blades cleave through ranks of enemies like grass before the scythe.</p>
+       <div class="flex gap-4 text-xs">
+        <span class="px-3 py-1 bg-orange-900/30 border border-orange-800/50 rounded-full text-orange-400">HEAVY</span> <span class="px-3 py-1 bg-red-900/30 border border-red-800/50 rounded-full text-red-400">SIEGE</span>
+       </div>
+      </div><!-- Unit Card 5 - Queen -->
+      <div class="unit-card rounded-2xl p-6 breathe" style="animation-delay: 2s;">
+       <div class="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-purple-900/50 to-black flex items-center justify-center">
+        <svg viewbox="0 0 200 150" class="w-3/4 h-3/4">
+         <ellipse cx="100" cy="110" rx="45" ry="30" fill="#2d1235" /> <ellipse cx="100" cy="70" rx="30" ry="35" fill="#3d1a45" /> <path d="M 75 45 Q 70 25 85 20" stroke="#39ff14" stroke-width="3" fill="none" /> <path d="M 125 45 Q 130 25 115 20" stroke="#39ff14" stroke-width="3" fill="none" /> <circle cx="90" cy="60" r="7" fill="#39ff14" class="pulse-glow" /> <circle cx="110" cy="60" r="7" fill="#39ff14" class="pulse-glow" /> <path d="M 55 100 L 30 85" stroke="#3d1a45" stroke-width="6" /> <path d="M 145 100 L 170 85" stroke="#3d1a45" stroke-width="6" /> <ellipse cx="100" cy="130" rx="20" ry="10" fill="#8b0000" opacity="0.5" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+       </div>
+       <h3 class="alien-font text-2xl text-green-400 mb-2">QUEEN</h3>
+       <p class="text-gray-400 text-sm mb-4">Mothers of the hive. They spawn larvae, heal wounded Zerg, and spread creep to expand our domain.</p>
+       <div class="flex gap-4 text-xs">
+        <span class="px-3 py-1 bg-pink-900/30 border border-pink-800/50 rounded-full text-pink-400">SUPPORT</span> <span class="px-3 py-1 bg-green-900/30 border border-green-800/50 rounded-full text-green-400">SPAWN</span>
+       </div>
+      </div><!-- Unit Card 6 - Roach -->
+      <div class="unit-card rounded-2xl p-6 breathe" style="animation-delay: 2.5s;">
+       <div class="relative w-full h-48 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-purple-900/50 to-black flex items-center justify-center">
+        <svg viewbox="0 0 200 150" class="w-3/4 h-3/4">
+         <ellipse cx="100" cy="90" rx="55" ry="35" fill="#2d1235" /> <ellipse cx="100" cy="80" rx="45" ry="30" fill="#3d1a45" /> <ellipse cx="100" cy="70" rx="35" ry="20" fill="#4d2a55" /> <circle cx="90" cy="65" r="6" fill="#39ff14" class="pulse-glow" /> <circle cx="110" cy="65" r="6" fill="#39ff14" class="pulse-glow" /> <path d="M 100 85 L 100 110" stroke="#8b0000" stroke-width="6" /> <ellipse cx="100" cy="115" rx="10" ry="8" fill="#8b0000" /> <path d="M 50 95 L 35 110" stroke="#3d1a45" stroke-width="5" /> <path d="M 150 95 L 165 110" stroke="#3d1a45" stroke-width="5" />
+        </svg>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+       </div>
+       <h3 class="alien-font text-2xl text-green-400 mb-2">ROACH</h3>
+       <p class="text-gray-400 text-sm mb-4">Armored acid-spitters. Their regenerative carapace makes them incredibly durable frontline warriors.</p>
+       <div class="flex gap-4 text-xs">
+        <span class="px-3 py-1 bg-emerald-900/30 border border-emerald-800/50 rounded-full text-emerald-400">REGEN</span> <span class="px-3 py-1 bg-amber-900/30 border border-amber-800/50 rounded-full text-amber-400">ARMORED</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider"></div><!-- Gallery Section -->
+   <section id="gallery" class="relative py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 class="alien-font text-4xl sm:text-5xl font-bold text-green-400 mb-4" style="text-shadow: 0 0 40px rgba(57, 255, 20, 0.4);">HIVE VISIONS</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">Witness the glory of the Swarm through the collective memory of the Overmind.</p>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <!-- Gallery Items with organic SVG art -->
+      <div class="gallery-item aspect-square rounded-xl bg-gradient-to-br from-purple-900/30 to-black flex items-center justify-center group">
+       <svg viewbox="0 0 100 100" class="w-3/4 h-3/4 opacity-70 group-hover:opacity-100 transition-opacity">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#39ff14" stroke-width="1" opacity="0.5" /> <circle cx="50" cy="50" r="30" fill="none" stroke="#8b0000" stroke-width="1" opacity="0.5" /> <circle cx="50" cy="50" r="20" fill="#39ff14" opacity="0.3" class="pulse-glow" /> <circle cx="50" cy="50" r="5" fill="#39ff14" />
+       </svg>
+      </div>
+      <div class="gallery-item aspect-square rounded-xl bg-gradient-to-br from-red-900/30 to-black flex items-center justify-center group col-span-2 row-span-2">
+       <svg viewbox="0 0 200 200" class="w-3/4 h-3/4 opacity-70 group-hover:opacity-100 transition-opacity">
+        <ellipse cx="100" cy="100" rx="80" ry="70" fill="#1a0a1f" stroke="#39ff14" stroke-width="2" /> <ellipse cx="100" cy="80" rx="50" ry="40" fill="#2d1235" /> <circle cx="80" cy="70" r="15" fill="#39ff14" opacity="0.8" class="pulse-glow" /> <circle cx="120" cy="70" r="15" fill="#39ff14" opacity="0.8" class="pulse-glow" /> <path d="M 70 110 Q 100 140 130 110" stroke="#8b0000" stroke-width="4" fill="none" /> <path d="M 40 60 Q 20 40 30 20" stroke="#3d1a45" stroke-width="8" fill="none" /> <path d="M 160 60 Q 180 40 170 20" stroke="#3d1a45" stroke-width="8" fill="none" />
+       </svg>
+      </div>
+      <div class="gallery-item aspect-square rounded-xl bg-gradient-to-br from-green-900/30 to-black flex items-center justify-center group">
+       <svg viewbox="0 0 100 100" class="w-3/4 h-3/4 opacity-70 group-hover:opacity-100 transition-opacity">
+        <polygon points="50,10 90,90 10,90" fill="none" stroke="#39ff14" stroke-width="2" /> <polygon points="50,30 75,75 25,75" fill="#39ff14" opacity="0.2" /> <circle cx="50" cy="55" r="10" fill="#39ff14" class="pulse-glow" />
+       </svg>
+      </div>
+      <div class="gallery-item aspect-square rounded-xl bg-gradient-to-br from-purple-900/30 to-black flex items-center justify-center group">
+       <svg viewbox="0 0 100 100" class="w-3/4 h-3/4 opacity-70 group-hover:opacity-100 transition-opacity">
+        <path d="M 20 80 Q 50 20 80 80" stroke="#8b0000" stroke-width="3" fill="none" /> <path d="M 30 80 Q 50 30 70 80" stroke="#39ff14" stroke-width="2" fill="none" /> <circle cx="50" cy="40" r="8" fill="#39ff14" class="pulse-glow" />
+       </svg>
+      </div>
+      <div class="gallery-item aspect-square rounded-xl bg-gradient-to-br from-red-900/30 to-black flex items-center justify-center group">
+       <svg viewbox="0 0 100 100" class="w-3/4 h-3/4 opacity-70 group-hover:opacity-100 transition-opacity breathe">
+        <ellipse cx="50" cy="50" rx="35" ry="40" fill="#2d1235" stroke="#8b0000" stroke-width="2" /> <ellipse cx="50" cy="45" rx="20" ry="25" fill="#3d1a45" /> <circle cx="50" cy="40" r="10" fill="#39ff14" opacity="0.5" class="pulse-glow" />
+       </svg>
+      </div>
+      <div class="gallery-item aspect-square rounded-xl bg-gradient-to-br from-green-900/30 to-black flex items-center justify-center group">
+       <svg viewbox="0 0 100 100" class="w-3/4 h-3/4 opacity-70 group-hover:opacity-100 transition-opacity">
+        <rect x="20" y="20" width="60" height="60" fill="none" stroke="#39ff14" stroke-width="1" transform="rotate(45 50 50)" /> <rect x="30" y="30" width="40" height="40" fill="#39ff14" opacity="0.1" transform="rotate(45 50 50)" /> <circle cx="50" cy="50" r="12" fill="#39ff14" class="pulse-glow" />
+       </svg>
+      </div>
+      <div class="gallery-item aspect-square rounded-xl bg-gradient-to-br from-purple-900/30 to-black flex items-center justify-center group col-span-2">
+       <svg viewbox="0 0 200 100" class="w-3/4 h-3/4 opacity-70 group-hover:opacity-100 transition-opacity">
+        <path d="M 20 50 Q 50 20 100 50 T 180 50" stroke="#39ff14" stroke-width="2" fill="none" /> <path d="M 20 50 Q 50 80 100 50 T 180 50" stroke="#8b0000" stroke-width="2" fill="none" /> <circle cx="100" cy="50" r="15" fill="#39ff14" opacity="0.3" class="pulse-glow" /> <circle cx="60" cy="50" r="8" fill="#39ff14" opacity="0.5" /> <circle cx="140" cy="50" r="8" fill="#39ff14" opacity="0.5" />
+       </svg>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider"></div><!-- Lore Section -->
+   <section id="lore" class="relative py-20 px-4">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-16">
+      <h2 id="lore-section-title" class="alien-font text-4xl sm:text-5xl font-bold text-green-400 mb-4" style="text-shadow: 0 0 40px rgba(57, 255, 20, 0.4);">THE ETERNAL SWARM</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">Our history spans millennia. Our purpose is absolute.</p>
+     </div>
+     <div class="space-y-8">
+      <!-- Lore Card 1 -->
+      <div class="unit-card rounded-2xl p-8 relative overflow-hidden">
+       <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl"></div>
+       <h3 class="alien-font text-2xl text-green-400 mb-4 flex items-center gap-3"><span class="w-3 h-3 bg-green-400 rounded-full pulse-glow"></span> THE OVERMIND</h3>
+       <p class="text-gray-300 leading-relaxed mb-4">Born from the ancient Xel'Naga experiments, the Overmind was created to achieve perfection through assimilation. It unified countless Zerg strains into a single hive consciousness, guiding the Swarm across the stars in search of genetic perfection.</p>
+       <p class="text-gray-400 text-sm italic">"I am the Overmind. I am the eternal will of the Swarm."</p>
+      </div><!-- Lore Card 2 -->
+      <div class="unit-card rounded-2xl p-8 relative overflow-hidden">
+       <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl"></div>
+       <h3 class="alien-font text-2xl text-red-400 mb-4 flex items-center gap-3"><span class="w-3 h-3 bg-red-400 rounded-full pulse-glow"></span> THE QUEEN OF BLADES</h3>
+       <p class="text-gray-300 leading-relaxed mb-4">Sarah Kerrigan, once a Terran Ghost, was transformed into the Queen of Blades—the most powerful being the Swarm has ever produced. Her strategic genius combined with her psionic abilities made her an unstoppable force that reshaped the galaxy.</p>
+       <p class="text-gray-400 text-sm italic">"I am the Swarm. Armies will be shattered. Worlds will burn."</p>
+      </div><!-- Lore Card 3 -->
+      <div class="unit-card rounded-2xl p-8 relative overflow-hidden">
+       <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
+       <h3 class="alien-font text-2xl text-purple-400 mb-4 flex items-center gap-3"><span class="w-3 h-3 bg-purple-400 rounded-full pulse-glow"></span> THE CREEP</h3>
+       <p class="text-gray-300 leading-relaxed mb-4">The Creep is the biomass foundation of all Zerg structures. This living carpet spreads across worlds, transforming hostile environments into perfect Zerg habitats. It provides nutrients to structures, accelerates Zerg movement, and serves as the nervous system of every hive cluster.</p>
+       <p class="text-gray-400 text-sm italic">"Where the Creep spreads, the Swarm follows."</p>
+      </div><!-- Timeline -->
+      <div class="mt-16">
+       <h3 class="alien-font text-2xl text-green-400 mb-8 text-center">EVOLUTION TIMELINE</h3>
+       <div class="relative">
+        <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500 via-red-500 to-purple-500 -translate-x-1/2"></div>
+        <div class="space-y-12">
+         <div class="relative flex items-center">
+          <div class="w-1/2 pr-8 text-right">
+           <span class="alien-font text-green-400">EPOCH 1</span>
+           <p class="text-gray-400 text-sm">The Xel'Naga create the first Zerg on Zerus</p>
+          </div>
+          <div class="absolute left-1/2 w-4 h-4 bg-green-400 rounded-full -translate-x-1/2 organic-glow"></div>
+          <div class="w-1/2 pl-8"></div>
+         </div>
+         <div class="relative flex items-center">
+          <div class="w-1/2 pr-8"></div>
+          <div class="absolute left-1/2 w-4 h-4 bg-red-400 rounded-full -translate-x-1/2 organic-glow"></div>
+          <div class="w-1/2 pl-8">
+           <span class="alien-font text-red-400">EPOCH 2</span>
+           <p class="text-gray-400 text-sm">The Overmind unifies the Swarm</p>
+          </div>
+         </div>
+         <div class="relative flex items-center">
+          <div class="w-1/2 pr-8 text-right">
+           <span class="alien-font text-purple-400">EPOCH 3</span>
+           <p class="text-gray-400 text-sm">First contact with the Protoss and Terrans</p>
+          </div>
+          <div class="absolute left-1/2 w-4 h-4 bg-purple-400 rounded-full -translate-x-1/2 organic-glow"></div>
+          <div class="w-1/2 pl-8"></div>
+         </div>
+         <div class="relative flex items-center">
+          <div class="w-1/2 pr-8"></div>
+          <div class="absolute left-1/2 w-4 h-4 bg-green-400 rounded-full -translate-x-1/2 organic-glow"></div>
+          <div class="w-1/2 pl-8">
+           <span class="alien-font text-green-400">EPOCH 4</span>
+           <p class="text-gray-400 text-sm">Rise of the Queen of Blades</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Section Divider -->
+   <div class="section-divider"></div><!-- Join Section -->
+   <section id="join" class="relative py-20 px-4">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 id="contact-section-title" class="alien-font text-4xl sm:text-5xl font-bold text-green-400 mb-4" style="text-shadow: 0 0 40px rgba(57, 255, 20, 0.4);">JOIN THE SWARM</h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">Submit to the collective. Your essence will strengthen us all.</p>
+     </div>
+     <div class="unit-card rounded-2xl p-8 relative overflow-hidden">
+      <!-- Decorative Elements -->
+      <div class="absolute top-4 left-4 w-20 h-20">
+       <svg viewbox="0 0 100 100" class="w-full h-full opacity-20">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#39ff14" stroke-width="1" /> <circle cx="50" cy="50" r="30" fill="none" stroke="#39ff14" stroke-width="1" /> <circle cx="50" cy="50" r="20" fill="none" stroke="#39ff14" stroke-width="1" />
+       </svg>
+      </div>
+      <div class="absolute bottom-4 right-4 w-20 h-20">
+       <svg viewbox="0 0 100 100" class="w-full h-full opacity-20">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="#8b0000" stroke-width="1" /> <circle cx="50" cy="50" r="30" fill="none" stroke="#8b0000" stroke-width="1" /> <circle cx="50" cy="50" r="20" fill="none" stroke="#8b0000" stroke-width="1" />
+       </svg>
+      </div>
+      <form id="join-form" class="space-y-6 relative z-10">
+       <div>
+        <label for="designation" class="block alien-font text-sm text-green-400 mb-2">DESIGNATION</label> <input type="text" id="designation" name="designation" placeholder="Enter your name" class="input-organic w-full px-4 py-3 rounded-lg text-gray-200 placeholder-gray-500">
+       </div>
+       <div>
+        <label for="origin" class="block alien-font text-sm text-green-400 mb-2">ORIGIN SIGNAL</label> <input type="email" id="origin" name="origin" placeholder="Enter your email" class="input-organic w-full px-4 py-3 rounded-lg text-gray-200 placeholder-gray-500">
+       </div>
+       <div>
+        <label for="strain" class="block alien-font text-sm text-green-400 mb-2">PREFERRED STRAIN</label> <select id="strain" name="strain" class="input-organic w-full px-4 py-3 rounded-lg text-gray-200 bg-opacity-80"> <option value="">Select your role</option> <option value="zergling">Zergling - Swift Assault</option> <option value="hydralisk">Hydralisk - Ranged Support</option> <option value="mutalisk">Mutalisk - Aerial Dominance</option> <option value="ultralisk">Ultralisk - Heavy Siege</option> <option value="queen">Queen - Hive Management</option> </select>
+       </div>
+       <div>
+        <label for="message" class="block alien-font text-sm text-green-400 mb-2">TRANSMISSION</label> <textarea id="message" name="message" rows="4" placeholder="Your message to the Overmind..." class="input-organic w-full px-4 py-3 rounded-lg text-gray-200 placeholder-gray-500 resize-none"></textarea>
+       </div>
+       <div class="flex items-center gap-3">
+        <input type="checkbox" id="assimilate" name="assimilate" class="w-5 h-5 rounded border-green-500 bg-transparent text-green-500 focus:ring-green-500 focus:ring-offset-0"> <label for="assimilate" class="text-gray-400 text-sm"> I willingly submit to the Swarm and accept assimilation </label>
+       </div><button type="submit" class="organic-btn w-full py-4 rounded-full alien-font text-green-400 tracking-wider text-lg"> INITIATE ASSIMILATION </button>
+      </form><!-- Success Message (hidden by default) -->
+      <div id="success-message" class="hidden text-center py-8">
+       <div class="w-24 h-24 mx-auto mb-6">
+        <svg viewbox="0 0 100 100" class="w-full h-full">
+         <circle cx="50" cy="50" r="45" fill="none" stroke="#39ff14" stroke-width="2" class="organic-glow" /> <path d="M 30 50 L 45 65 L 70 35" stroke="#39ff14" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+       </div>
+       <h3 class="alien-font text-2xl text-green-400 mb-4">ASSIMILATION INITIATED</h3>
+       <p class="text-gray-400">Welcome to the Swarm. Your essence has been catalogued.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="relative py-12 px-4 chitin-texture border-t border-green-500/20">
+    <div class="max-w-7xl mx-auto">
+     <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+       <div class="w-8 h-8">
+        <svg viewbox="0 0 100 100" class="w-full h-full">
+         <ellipse cx="50" cy="50" rx="35" ry="45" fill="#1a0a1f" stroke="#39ff14" stroke-width="2" /> <ellipse cx="50" cy="35" rx="15" ry="20" fill="rgba(57, 255, 20, 0.3)" class="pulse-glow" /> <circle cx="40" cy="35" r="5" fill="#39ff14" /> <circle cx="60" cy="35" r="5" fill="#39ff14" />
+        </svg>
+       </div><span class="alien-font text-sm text-gray-400">THE SWARM © 2024</span>
+      </div>
+      <div class="flex items-center gap-6">
+       <a href="#" class="text-gray-400 hover:text-green-400 transition-colors">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
+         <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+        </svg></a> <a href="#" class="text-gray-400 hover:text-green-400 transition-colors">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
+         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+        </svg></a> <a href="#" class="text-gray-400 hover:text-green-400 transition-colors">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
+         <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028 14.09 14.09 0 001.226-1.994.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+        </svg></a>
+      </div>
+      <p class="text-gray-500 text-sm alien-font">FOR THE SWARM</p>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      hero_title: 'THE SWARM',
+      hero_subtitle: 'AWAKENS',
+      units_title: 'SWARM ORGANISMS',
+      lore_title: 'THE ETERNAL SWARM',
+      contact_title: 'JOIN THE SWARM',
+      background_color: '#0a0510',
+      surface_color: '#1a0a1f',
+      text_color: '#e5e7eb',
+      primary_color: '#39ff14',
+      secondary_color: '#8b0000',
+      font_family: 'Orbitron',
+      font_size: 16
+    };
+
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          // Update hero title
+          const heroTitle = document.getElementById('hero-title');
+          if (heroTitle) {
+            heroTitle.querySelector('span').textContent = config.hero_title || defaultConfig.hero_title;
+          }
+          
+          // Update hero subtitle
+          const heroSubtitle = document.getElementById('hero-subtitle');
+          if (heroSubtitle) {
+            heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+          }
+          
+          // Update units section title
+          const unitsTitle = document.getElementById('units-section-title');
+          if (unitsTitle) {
+            unitsTitle.textContent = config.units_title || defaultConfig.units_title;
+          }
+          
+          // Update lore section title
+          const loreTitle = document.getElementById('lore-section-title');
+          if (loreTitle) {
+            loreTitle.textContent = config.lore_title || defaultConfig.lore_title;
+          }
+          
+          // Update contact section title
+          const contactTitle = document.getElementById('contact-section-title');
+          if (contactTitle) {
+            contactTitle.textContent = config.contact_title || defaultConfig.contact_title;
+          }
+          
+          // Apply colors
+          const bgColor = config.background_color || defaultConfig.background_color;
+          const surfaceColor = config.surface_color || defaultConfig.surface_color;
+          const textColor = config.text_color || defaultConfig.text_color;
+          const primaryColor = config.primary_color || defaultConfig.primary_color;
+          const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+          
+          document.documentElement.style.setProperty('--bg-color', bgColor);
+          document.documentElement.style.setProperty('--surface-color', surfaceColor);
+          document.documentElement.style.setProperty('--text-color', textColor);
+          document.documentElement.style.setProperty('--primary-color', primaryColor);
+          document.documentElement.style.setProperty('--secondary-color', secondaryColor);
+          
+          // Apply font
+          const fontFamily = config.font_family || defaultConfig.font_family;
+          const baseFontStack = 'monospace';
+          document.querySelectorAll('.alien-font').forEach(el => {
+            el.style.fontFamily = `${fontFamily}, ${baseFontStack}`;
+          });
+          
+          // Apply font size scaling
+          const fontSize = config.font_size || defaultConfig.font_size;
+          document.documentElement.style.fontSize = `${fontSize}px`;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => window.elementSdk.setConfig({ background_color: value })
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => window.elementSdk.setConfig({ surface_color: value })
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => window.elementSdk.setConfig({ text_color: value })
+            },
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => window.elementSdk.setConfig({ primary_color: value })
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => window.elementSdk.setConfig({ secondary_color: value })
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => window.elementSdk.setConfig({ font_family: value })
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => window.elementSdk.setConfig({ font_size: value })
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['units_title', config.units_title || defaultConfig.units_title],
+          ['lore_title', config.lore_title || defaultConfig.lore_title],
+          ['contact_title', config.contact_title || defaultConfig.contact_title]
+        ])
+      });
+    }
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking a link
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Form submission
+    const joinForm = document.getElementById('join-form');
+    const successMessage = document.getElementById('success-message');
+    
+    joinForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Validate form
+      const designation = document.getElementById('designation').value;
+      const origin = document.getElementById('origin').value;
+      const assimilate = document.getElementById('assimilate').checked;
+      
+      if (!designation || !origin || !assimilate) {
+        // Show inline validation
+        if (!designation) {
+          document.getElementById('designation').style.borderColor = '#8b0000';
+        }
+        if (!origin) {
+          document.getElementById('origin').style.borderColor = '#8b0000';
+        }
+        return;
+      }
+      
+      // Show success message
+      joinForm.classList.add('hidden');
+      successMessage.classList.remove('hidden');
+    });
+
+    // Reset form validation styles on input
+    document.querySelectorAll('.input-organic').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.style.borderColor = '';
+      });
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add random delays to spore animations for more organic feel
+    document.querySelectorAll('.spore').forEach((spore, index) => {
+      spore.style.animationDelay = `${Math.random() * 3}s`;
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d77c38445ba7d73',t:'MTc3MjY5OTQ4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
