@@ -1,0 +1,243 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&family=M+PLUS+1+Code:wght@300;400;700&family=DotGothic16&family=Noto+Sans+JP:wght@300;400;700&family=Reggae+One&family=Sawarabi+Gothic&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+.wrap{background:#0a0e1a;padding:16px;font-family:'M PLUS 1 Code',monospace;}
+.panel{background:linear-gradient(135deg,rgba(13,20,32,0.97),rgba(10,14,26,0.99));border:1px solid rgba(0,217,255,0.25);box-shadow:inset 0 1px 0 rgba(0,217,255,0.15),0 0 30px rgba(0,217,255,0.08);position:relative;overflow:hidden;margin-bottom:12px;}
+.panel::before{content:'';position:absolute;inset:0 auto auto 0;height:2px;width:100%;background:linear-gradient(to right,transparent,#00d9ff,transparent);opacity:0.5;animation:scan 3s linear infinite;}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(4000%)}}
+.panel-header{padding:10px 16px;border-bottom:1px solid rgba(0,217,255,0.2);background:linear-gradient(90deg,rgba(0,217,255,0.05),transparent);display:flex;align-items:center;justify-content:space-between;}
+.panel-header h2{font-family:'M PLUS 1 Code',monospace;font-size:11px;color:#00d9ff;letter-spacing:0.2em;}
+.panel-body{padding:16px;}
+.badge{display:inline-block;background:rgba(0,217,255,0.1);border:1px solid rgba(0,217,255,0.35);color:#00d9ff;font-family:'M PLUS 1 Code',monospace;font-size:9px;padding:2px 8px;letter-spacing:0.15em;margin-bottom:12px;}
+.corner-tl,.corner-br{position:absolute;width:10px;height:10px;}
+.corner-tl{top:-1px;left:-1px;border-top:2px solid #00d9ff;border-left:2px solid #00d9ff;}
+.corner-br{bottom:-1px;right:-1px;border-bottom:2px solid #00d9ff;border-right:2px solid #00d9ff;}
+.scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,217,255,0.015) 2px,rgba(0,217,255,0.015) 4px);pointer-events:none;z-index:2;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#00e5c8;box-shadow:0 0 8px #00e5c8;display:inline-block;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.blink{animation:blink 1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.bullet{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px 0;border-bottom:1px solid rgba(0,217,255,0.08);}
+.bullet:last-child{border-bottom:none;}
+.jp-text{font-family:'Noto Sans JP',sans-serif;font-weight:300;font-size:12px;color:rgba(255,255,255,0.85);line-height:2.2;letter-spacing:0.02em;}
+.bar{height:3px;background:rgba(0,217,255,0.15);margin:4px 0 8px;}
+.bar-fill{height:100%;background:linear-gradient(90deg,#00d9ff,#14b8a6);}
+</style>
+
+<div class="wrap">
+
+<div style="font-family:'M PLUS 1 Code',monospace;font-size:10px;color:rgba(0,217,255,0.4);letter-spacing:0.2em;margin-bottom:12px;text-align:center;">// PREVIEW — JAPANESE SECTION INTEGRATION INTO EXISTING CODEBASE</div>
+
+<!-- NAVBAR UPDATE PREVIEW -->
+<div class="panel" style="margin-bottom:12px;">
+  <div class="corner-tl"></div><div class="corner-br"></div><div class="scanlines"></div>
+  <div class="panel-header">
+    <h2>// NAVBAR — BEFORE → AFTER</h2>
+  </div>
+  <div class="panel-body">
+    <div class="grid2" style="gap:16px;align-items:center;">
+      <div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.2em;margin-bottom:8px;">BEFORE</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:16px;color:#67e8f9;letter-spacing:0.1em;">TERRAN DOMINION FLEET</div>
+        <div style="display:flex;gap:16px;margin-top:10px;">
+          <span style="font-family:'Orbitron',sans-serif;font-size:11px;color:#a5f3fc;">TERRAN</span>
+          <span style="font-family:'Orbitron',sans-serif;font-size:11px;color:#a5f3fc;">UNITS</span>
+          <span style="font-family:'Orbitron',sans-serif;font-size:11px;color:#a5f3fc;">FLEET</span>
+          <span style="font-family:'Orbitron',sans-serif;font-size:11px;color:#a5f3fc;">INTEL</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:9px;color:rgba(0,229,200,0.6);letter-spacing:0.2em;margin-bottom:8px;">AFTER ★</div>
+        <div>
+          <span style="font-family:'M PLUS 1 Code',monospace;font-size:16px;color:#67e8f9;letter-spacing:0.08em;">テラン自治領</span>
+          <span style="font-family:'M PLUS 1 Code',monospace;font-size:10px;color:rgba(0,217,255,0.5);letter-spacing:0.2em;display:block;margin-top:2px;">TERRAN DOMINION FLEET</span>
+        </div>
+        <div style="display:flex;gap:14px;margin-top:10px;">
+          <div style="text-align:center;">
+            <div style="font-family:'Sawarabi Gothic',sans-serif;font-size:13px;color:#fff;">テラン</div>
+            <div style="font-family:'M PLUS 1 Code',monospace;font-size:8px;color:rgba(0,217,255,0.6);letter-spacing:0.15em;">TERRAN</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:'Sawarabi Gothic',sans-serif;font-size:13px;color:#fff;">ユニット</div>
+            <div style="font-family:'M PLUS 1 Code',monospace;font-size:8px;color:rgba(0,217,255,0.6);letter-spacing:0.15em;">UNITS</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:'Sawarabi Gothic',sans-serif;font-size:13px;color:#fff;">艦隊</div>
+            <div style="font-family:'M PLUS 1 Code',monospace;font-size:8px;color:rgba(0,217,255,0.6);letter-spacing:0.15em;">FLEET</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:'Sawarabi Gothic',sans-serif;font-size:13px;color:#fff;">情報</div>
+            <div style="font-family:'M PLUS 1 Code',monospace;font-size:8px;color:rgba(0,217,255,0.6);letter-spacing:0.15em;">INTEL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HUD STATS PREVIEW -->
+<div class="grid2" style="margin-bottom:12px;">
+  <div class="panel">
+    <div class="corner-tl"></div><div class="corner-br"></div><div class="scanlines"></div>
+    <div class="panel-header"><h2>// HUD STATS UPDATE</h2></div>
+    <div class="panel-body">
+      <div style="margin-bottom:8px;">
+        <div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.2em;">鉱物 · MINERALS</div>
+        <div style="font-family:'Zen Dots',cursive;font-size:22px;color:#93c5fd;text-shadow:0 0 10px rgba(96,165,250,0.5);">14,820</div>
+        <div class="bar"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#3b82f6,#60a5fa);"></div></div>
+      </div>
+      <div style="margin-bottom:8px;">
+        <div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.2em;">ベスピン · VESPENE</div>
+        <div style="font-family:'Zen Dots',cursive;font-size:22px;color:#86efac;text-shadow:0 0 10px rgba(74,222,128,0.5);">9,640</div>
+        <div class="bar"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#22c55e,#86efac);"></div></div>
+      </div>
+      <div>
+        <div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.2em;">補給 · SUPPLY</div>
+        <div style="font-family:'Zen Dots',cursive;font-size:22px;color:#fde68a;text-shadow:0 0 10px rgba(253,224,71,0.5);">168/200</div>
+        <div class="bar"><div class="bar-fill" style="width:84%;background:linear-gradient(90deg,#f59e0b,#fde68a);"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="corner-tl"></div><div class="corner-br"></div><div class="scanlines"></div>
+    <div class="panel-header"><h2>// UNIT COUNTER UPDATE</h2></div>
+    <div class="panel-body">
+      <div class="grid3" style="margin-bottom:12px;">
+        <div style="border:1px solid rgba(0,217,255,0.2);padding:8px;text-align:center;">
+          <div style="font-family:'Zen Dots',cursive;font-size:20px;color:#00d9ff;">24</div>
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:0.1em;">歩兵</div>
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:7px;color:rgba(0,217,255,0.5);letter-spacing:0.1em;">MARINES</div>
+        </div>
+        <div style="border:1px solid rgba(0,217,255,0.2);padding:8px;text-align:center;">
+          <div style="font-family:'Zen Dots',cursive;font-size:20px;color:#00d9ff;">8</div>
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:0.1em;">戦車</div>
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:7px;color:rgba(0,217,255,0.5);letter-spacing:0.1em;">TANKS</div>
+        </div>
+        <div style="border:1px solid rgba(0,217,255,0.2);padding:8px;text-align:center;">
+          <div style="font-family:'Zen Dots',cursive;font-size:20px;color:#00d9ff;">3</div>
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:8px;color:rgba(255,255,255,0.35);letter-spacing:0.1em;">巡洋艦</div>
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:7px;color:rgba(0,217,255,0.5);letter-spacing:0.1em;">CRUISERS</div>
+        </div>
+      </div>
+      <div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.15em;text-align:center;">脅威レベル：</div>
+      <div style="font-family:'DotGothic16',sans-serif;font-size:18px;color:#ff3030;text-align:center;text-shadow:0 0 10px rgba(255,48,48,0.4);letter-spacing:0.1em;">最小 · MINIMAL</div>
+    </div>
+  </div>
+</div>
+
+<!-- INTEL FEED UPDATE -->
+<div class="panel" style="margin-bottom:12px;">
+  <div class="corner-tl"></div><div class="corner-br"></div><div class="scanlines"></div>
+  <div class="panel-header">
+    <h2>// INTEL FEED — BILINGUAL DATA STREAM</h2>
+    <div style="display:flex;align-items:center;gap:6px;"><div class="dot"></div><span style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:#00e5c8;letter-spacing:0.15em;">ライブ · LIVE</span></div>
+  </div>
+  <div class="panel-body" style="padding:10px 16px;">
+    <div style="font-family:'M PLUS 1 Code',monospace;font-size:10px;line-height:2.0;">
+      <div style="display:flex;gap:10px;padding:3px 0;border-bottom:1px solid rgba(0,217,255,0.06);">
+        <span style="color:rgba(0,217,255,0.35);white-space:nowrap;">14:32:07</span>
+        <span style="color:#86efac;">● ハイペリオン · シールド最大稼働中</span>
+      </div>
+      <div style="display:flex;gap:10px;padding:3px 0;border-bottom:1px solid rgba(0,217,255,0.06);">
+        <span style="color:rgba(0,217,255,0.35);white-space:nowrap;">14:32:03</span>
+        <span style="color:#f87171;">⚠ 警告：ザーグ活動検出 — セクター7G</span>
+      </div>
+      <div style="display:flex;gap:10px;padding:3px 0;border-bottom:1px solid rgba(0,217,255,0.06);">
+        <span style="color:rgba(0,217,255,0.35);white-space:nowrap;">14:31:48</span>
+        <span style="color:#fde68a;">◆ 強化要請 — ネメシス隊</span>
+      </div>
+      <div style="display:flex;gap:10px;padding:3px 0;border-bottom:1px solid rgba(0,217,255,0.06);">
+        <span style="color:rgba(0,217,255,0.35);white-space:nowrap;">14:31:25</span>
+        <span style="color:#a5f3fc;">◇ 資源採掘：最適 · SCV #47稼働確認</span>
+      </div>
+      <div style="display:flex;gap:10px;padding:3px 0;">
+        <span style="color:rgba(0,217,255,0.35);white-space:nowrap;">14:31:20</span>
+        <span style="color:#f87171;">★ 優先：敵基地位置確認済み</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEW JAPANESE LORE SECTION -->
+<div class="panel">
+  <div class="corner-tl"></div><div class="corner-br"></div><div class="scanlines"></div>
+  <div class="panel-header">
+    <h2>// 新セクション · NEW SECTION — 任務概要 · MISSION BRIEFING</h2>
+    <span style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:#ff3030;letter-spacing:0.15em;animation:blink 1s step-end infinite;" class="blink">機密 · CLASSIFIED</span>
+  </div>
+  <div class="panel-body">
+    <div class="grid2" style="gap:20px;align-items:start;">
+
+      <!-- LEFT: Japanese paragraph -->
+      <div>
+        <div class="badge">// 作戦指令書 · OPERATION ORDER</div>
+        <div class="jp-text" style="margin-bottom:16px;">
+          テラン自治領艦隊司令部より、<br>
+          赤星師団全隊員に告ぐ。<br><br>
+          コプルル宙域における<br>
+          異種族勢力の急速な拡大に伴い、<br>
+          本師団は即時展開命令を受理した。<br><br>
+          バトルクルーザー艦隊は<br>
+          軌道上制圧作戦を開始せよ。<br>
+          ゴースト特殊部隊は<br>
+          敵指揮系統の無力化を実施せよ。<br><br>
+          任務の成否は、<br>
+          諸君の判断と行動にかかっている。<br>
+          テラン自治領の未来を守れ。
+        </div>
+        <div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;line-height:1.8;border-left:2px solid rgba(0,217,255,0.3);padding-left:10px;">
+          "All units of the Redstar Division: immediate deployment orders received. Orbital bombardment commences now. Ghost operatives — neutralize enemy command. The future of the Dominion rests with you."
+        </div>
+      </div>
+
+      <!-- RIGHT: Bilingual readouts -->
+      <div>
+        <div class="badge" style="background:rgba(255,48,48,0.08);border-color:rgba(255,48,48,0.3);color:#ff6060;">// 作戦パラメータ · PARAMETERS</div>
+        <div>
+          <div class="bullet">
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:11px;color:#fff;">▶ 宙域：コプルル</span>
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:10px;color:rgba(0,217,255,0.6);">SECTOR: KOPRULU</span>
+          </div>
+          <div class="bullet">
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:11px;color:#fff;">▶ 脅威レベル：最高</span>
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:10px;color:#ff6060;">THREAT: CRITICAL</span>
+          </div>
+          <div class="bullet">
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:11px;color:#fff;">▶ 損失数：機密</span>
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:10px;color:rgba(0,217,255,0.6);">CASUALTIES: CLASSIFIED</span>
+          </div>
+          <div class="bullet">
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:11px;color:#fff;">▶ 目標：制宙権確保</span>
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:10px;color:rgba(0,217,255,0.6);">OBJ: ORBITAL SUPREMACY</span>
+          </div>
+          <div class="bullet">
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:11px;color:#fff;">▶ 指揮官：レイナー提督</span>
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:10px;color:rgba(0,217,255,0.6);">CMD: ADM. RAYNOR</span>
+          </div>
+          <div class="bullet">
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:11px;color:#fff;">▶ 状態：稼働中</span>
+            <span style="font-family:'M PLUS 1 Code',monospace;font-size:10px;color:#00e5c8;">STATUS: ACTIVE ⬤</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;border:1px solid rgba(0,217,255,0.2);padding:10px;">
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.2em;margin-bottom:6px;">パワーコア · POWER CORE</div>
+          <div class="bar" style="margin:0;"><div class="bar-fill" style="width:98%;"></div></div>
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.2em;margin:8px 0 6px;">スキャナー · SCANNER</div>
+          <div class="bar" style="margin:0;"><div class="bar-fill" style="width:100%;"></div></div>
+          <div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(255,255,255,0.25);letter-spacing:0.2em;margin:8px 0 6px;">通信 · COMMS</div>
+          <div class="bar" style="margin:0;"><div class="bar-fill" style="width:85%;"></div></div>
+        </div>
+        <button style="margin-top:12px;width:100%;background:rgba(0,217,255,0.08);border:1px solid rgba(0,217,255,0.35);color:#00d9ff;font-family:'M PLUS 1 Code',monospace;font-size:11px;letter-spacing:0.15em;padding:10px;cursor:pointer;">
+          情報にアクセス · ACCESS FULL INTEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="font-family:'M PLUS 1 Code',monospace;font-size:9px;color:rgba(0,217,255,0.3);text-align:center;margin-top:10px;letter-spacing:0.2em;">// テラン自治領 · TERRAN DOMINION · コプルル宙域 · KOPRULU SECTOR</div>
+</div>
