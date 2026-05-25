@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import SectionMeta from "./SectionMeta";
+import * as Audio from "../audio/AudioEngine";
 
 const briefingParams = [
   { jp: "▶ 宙域：コプルル", en: "SECTOR: KOPRULU", color: "" },
@@ -79,6 +80,8 @@ export default function MissionBriefing() {
                 className="briefing-btn"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={() => Audio.playIntel()}
+                onMouseEnter={() => Audio.playHover(1000, 0.03)}
               >
                 情報にアクセス · ACCESS FULL INTEL
               </motion.button>

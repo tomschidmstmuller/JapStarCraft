@@ -256,7 +256,7 @@ body {
 .nav-en {
   font-family: var(--font-hud);
   font-size: 9px;
-  color: rgba(26, 159, 255, 0.7);
+  color: rgba(139, 91, 246, 0.7);
   letter-spacing: 0.2em;
 }
 .nav-links a {
@@ -382,7 +382,7 @@ body {
   color: #fff;
   letter-spacing: 0.12em;
   line-height: 1;
-  text-shadow: 0 0 40px rgba(255,255,255,0.3), 0 0 80px rgba(26,159,255,0.15);
+  text-shadow: 0 0 40px rgba(255,255,255,0.3), 0 0 80px rgba(139,91,246,0.15);
 }
 
 .hero-sub-line {
@@ -393,7 +393,7 @@ body {
   letter-spacing: 0.2em;
   line-height: 1;
   margin-top: 4px;
-  text-shadow: 0 0 30px rgba(26,159,255,0.6), 0 0 60px rgba(26,159,255,0.3);
+  text-shadow: 0 0 30px rgba(139,91,246,0.6), 0 0 60px rgba(139,91,246,0.3);
 }
 
 .letter { display: inline-block; }
@@ -404,7 +404,7 @@ body {
   font-size: 13px;
   letter-spacing: 0.2em;
   color: var(--blue);
-  background: rgba(26,159,255,0.08);
+  background: rgba(139,91,246,0.08);
   border: 1.5px solid var(--blue);
   padding: 14px 40px;
   cursor: pointer;
@@ -479,7 +479,7 @@ body {
   font-size: 32px;
   letter-spacing: 0.15em;
   color: #fff;
-  text-shadow: 0 0 20px rgba(26,159,255,0.3);
+  text-shadow: 0 0 20px rgba(139,91,246,0.3);
 }
 .fleet-header h2 span { color: var(--blue); }
 .fleet-header p {
@@ -609,7 +609,7 @@ body {
 
 .briefing-badge {
   display: inline-block;
-  background: rgba(0,217,255,0.1);
+  background: rgba(125,211,252,0.1);
   border: 1px solid rgba(125,211,252,0.35);
   color: var(--signal-cyan);
   font-family: var(--font-hud);
@@ -1052,3 +1052,16 @@ body::before {
 .corner-tr { top: 8px; right: 8px; border-top: 2px solid var(--blue); border-right: 2px solid var(--blue); }
 .corner-bl { bottom: 8px; left: 8px; border-bottom: 2px solid var(--blue); border-left: 2px solid var(--blue); }
 .corner-br { bottom: 8px; right: 8px; border-bottom: 2px solid var(--blue); border-right: 2px solid var(--blue); }
+
+/* ── REDUCED MOTION ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .matrix-terminal { display: none !important; }
+  .atmo-data-stream, .atmo-energy-pulse { display: none !important; }
+  .hero-emblem { animation: none !important; }
+  .quantum-dot { animation: none !important; }
+}

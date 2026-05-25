@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import SectionMeta from "./SectionMeta";
+import * as Audio from "../audio/AudioEngine";
 
 const fleetTiles = [
   { id: "dropship", img: "dropship.jpg", labelJP: "降下艦級", labelEN: "DROPSHIP CLASS", cls: "tile-hero" },
@@ -51,6 +52,8 @@ export default function FleetGrid() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
+            onClick={() => Audio.playClick(600, 0.06)}
+            onMouseEnter={() => Audio.playHover(900, 0.03)}
           >
             <img src={`/media/${tile.img}`} alt={tile.labelEN} />
             <div className="fleet-tile-label">

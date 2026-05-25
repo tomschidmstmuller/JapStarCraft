@@ -1,16 +1,21 @@
+import { lazy, Suspense } from "react";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import SectionDivider from "./components/SectionDivider";
-import QuantumCoreScene from "./components/QuantumCore";
 import FleetGrid from "./components/FleetGrid";
 import CinematicGrid from "./components/CinematicGrid";
 import MissionBriefing from "./components/MissionBriefing";
 import SectionMeta from "./components/SectionMeta";
 import MatrixTerminal from "./components/MatrixTerminal";
-import { Canvas } from "@react-three/fiber";
+import AmbientAudio from "./components/AmbientAudio";
+import useInViewport from "./components/useInViewport";
 import "./App.css";
 
+const QuantumCanvas = lazy(() => import("./components/QuantumCanvas"));
+
 export default function App() {
+  const [quantumRef, quantumInView] = useInViewport(0.2);
+
   return (
     <div style={{ position: "relative", background: "var(--dark)" }}>
       <Navbar />
@@ -19,14 +24,10 @@ export default function App() {
 
       <SectionDivider />
 
-      <section className="quantum-core-section" id="quantum">
-        <Canvas
-          camera={{ position: [0, 0, 14], fov: 60 }}
-          gl={{ antialias: true, alpha: true }}
-          style={{ background: "transparent" }}
-        >
-          <QuantumCoreScene />
-        </Canvas>
+      <section className="quantum-core-section" id="quantum" ref={quantumRef}>
+        <Suspense fallback={<div style={{ width: "100%", height: "100vh", background: "#05010a" }} />}>
+          <QuantumCanvas frameloop={quantumInView ? "always" : "demand"} />
+        </Suspense>
 
         <div className="quantum-overlay">
           <SectionMeta clearance="// CLEARANCE: REACTOR" coords="NODE: QUANTUM-7 // SIGNAL: STABLE" />
@@ -59,6 +60,7 @@ export default function App() {
       <SectionDivider />
 
       <MatrixTerminal />
+      <AmbientAudio />
       <div className="atmo-grid" />
       <div className="atmo-data-stream" />
       <div className="atmo-fog" />

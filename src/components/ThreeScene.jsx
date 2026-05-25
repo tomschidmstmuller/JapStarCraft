@@ -40,7 +40,7 @@ export default function ThreeScene() {
       <Stars radius={200} depth={60} count={7000} factor={4} saturation={0.5} fade speed={0.5} />
       <ambientLight color="#112244" intensity={1.5} />
       <directionalLight color="#ffffff" intensity={2} position={[5, 3, 5]} />
-      <pointLight color="#1a9fff" intensity={3} distance={25} position={[-4, 2, 3]} />
+      <pointLight color="#8b5cf6" intensity={3} distance={25} position={[-4, 2, 3]} />
       <Planet />
       <Battlecruiser position={[3.5, 2.2, 2]} scale={1} rotY={Math.PI} phaseOffset={0} onFire={handleFire} />
       <Battlecruiser position={[4.2, 0.8, -1.5]} scale={0.55} rotY={Math.PI + 0.3} phaseOffset={2} onFire={handleFire} />

@@ -1,22 +1,25 @@
-import { Canvas } from "@react-three/fiber";
+import { lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import ThreeScene from "./ThreeScene";
 import AnimatedText from "./AnimatedText";
 import CountUp from "./CountUp";
 import SectionMeta from "./SectionMeta";
+import useInViewport from "./useInViewport";
+import * as Audio from "../audio/AudioEngine";
+
+const HeroCanvas = lazy(() => import("./HeroCanvas"));
 
 export default function HeroSection() {
+  const [sectionRef, inView] = useInViewport(0.2);
+
+  const handleDeploy = () => {
+    Audio.playDeploy();
+  };
+
   return (
-    <section className="hero" id="hero">
-      <div className="hero-canvas">
-        <Canvas
-          camera={{ position: [0, 2, 9], fov: 50 }}
-          gl={{ antialias: true, alpha: false }}
-          style={{ background: "#000005" }}
-        >
-          <ThreeScene />
-        </Canvas>
-      </div>
+    <section className="hero" id="hero" ref={sectionRef}>
+      <Suspense fallback={<div className="hero-canvas" style={{ background: "#000005" }} />}>
+        <HeroCanvas frameloop={inView ? "always" : "demand"} />
+      </Suspense>
 
       <div className="hero-image-overlay" />
 
@@ -34,6 +37,8 @@ export default function HeroSection() {
           transition={{ delay: 1.2, duration: 0.7, ease: "easeOut" }}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
+          onClick={handleDeploy}
+          onMouseEnter={() => Audio.playHover(600, 0.04)}
         >
           ⚡ 艦隊を展開 · DEPLOY
         </motion.button>

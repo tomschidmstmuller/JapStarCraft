@@ -11,6 +11,8 @@ const tiles = [
   { id: "s7", img: "giphy.gif", label: "TACTICAL FEED", cls: "small small7" },
 ];
 
+import * as Audio from "../audio/AudioEngine";
+
 export default function CinematicGrid() {
   return (
     <section className="cinematic-section" id="cinematic">
@@ -21,7 +23,12 @@ export default function CinematicGrid() {
         </div>
         <div className="grid-7-starcraft">
           {tiles.map((t) => (
-            <div key={t.id} className={`gif-card ${t.cls}`}>
+            <div
+              key={t.id}
+              className={`gif-card ${t.cls}`}
+              onMouseEnter={() => Audio.playHover(1000, 0.02)}
+              onClick={() => Audio.playClick(500, 0.05)}
+            >
               <img src={`/media/${t.img}`} alt={t.label} loading="lazy" />
               <div className="sc-badge">{t.label}</div>
             </div>
